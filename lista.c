@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include "lista.h"
 
+void liberar_nodo (nodo_t* nodo){
+  free(nodo);
+}
 
 lista_t* lista_crear(){
   lista_t* lista = calloc (1, sizeof (lista_t));
@@ -8,6 +11,8 @@ lista_t* lista_crear(){
 }
 
 bool lista_vacia ( lista_t* lista){
+  if(!lista)
+    return true;
   return lista->cantidad_elementos > 0;
 }
 
@@ -27,6 +32,7 @@ int lista_insertar(lista_t* lista, void* elemento){
     return OK;
   }
   lista->ultimo.siguiente = nuevo;
+  lista->ultimo = nuevo;
   lista->cantidad_elementos++;
   return TODO_OK;
 }
@@ -102,4 +108,34 @@ void* lista_elemento_en_posicion (lista_t* lista, size_t posicion){
     posicion_actual++;
   }
   return aux->elemento;
+}
+
+void* lista_ultimo(lista_t* lista){
+  if(!lista|| lista_vacia(lista) )
+    return NULL;
+  return lista->ultimo.elemento;
+}
+
+size_t lista_elementos (lista_t* lista){
+  if(!lista)
+    return 0;
+  return lista->cantidad_elementos;
+}
+
+int lista_apilar(lista_t* lista, void* elemento){
+  if(!lista || !elemento)
+    return ERROR;
+    //Fijarte de armar mas primitivas
+}
+
+void lista_destruir(lista_t* lista){
+  if (!lista)
+    return;
+  nodo_t* aux = lista->primero;
+  while (lista->cantidad_elementos > 0){
+    lista->primero = aux->siguiente;
+    liberar_nodo(aux);
+    aux = lista->primero;
+  }
+  free(lista);
 }
