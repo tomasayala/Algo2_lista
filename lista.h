@@ -4,6 +4,9 @@
 #include <stdbool.h>
 #include <stddef.h>
 
+#define ERROR -1
+#define TODO_OK 0
+
 typedef struct nodo{
   void* elemento;
   nodo_t siguiente;
