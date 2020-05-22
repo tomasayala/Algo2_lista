@@ -16,27 +16,52 @@ bool lista_vacia ( lista_t* lista){
   return lista->cantidad_elementos > 0;
 }
 
+nodo_t crear_nodo(void* elemento){
+  nodo_t nuevo = calloc(1, sizeof(nodo_t));
+  if(!nuevo)
+    return NULL;
+  nuevo->elemento = elemento;
+  return nuevo;
+}
+
+lista_t* apilar( lista_t* lista, nodo_t* nuevo ){
+  lista->ultimo.siguiente = nuevo;
+  lista->ultimo = nuevo;
+  lista->cantidad_elementos++;
+  return lista;
+}
+
+lista_t* insertar_primer_elemento(lista_t* lista, nodo_t* nuevo){
+  lista->primero = nuevo;
+  lista->ultimo = nuevo;
+  lista->cantidad_elementos++;
+  return lista;
+}
 
 int lista_insertar(lista_t* lista, void* elemento){
   if(!lista || !elemento){
     return ERROR;
   }
-  nodo_t nuevo = calloc(1, sizeof(nodo_t));
+  nodo_t* nuevo = crear_nodo(elemento);
   if(!nuevo)
     return ERROR;
-  nuevo->elemento = elemento;
   if (lista_vacia(lista){
-    lista->primero = nuevo;
-    lista->ultimo = nuevo;
-    lista->cantidad_elementos++;
-    return OK;
+    lista = insertar_primer_elemento(lista, nuevo);
+    return TODO_OK;
   }
-  lista->ultimo.siguiente = nuevo;
-  lista->ultimo = nuevo;
-  lista->cantidad_elementos++;
+  lista = apilar(lista,nuevo);
   return TODO_OK;
 }
 
+nodo_t* buscar_nodo_en_posicion_deseada(lista_t* lista, size_t posicion_deseada){
+  nodo_t* deseado = lista->primero;
+  size_t posicion_actual = 0;
+  while (posicion_actual != posicion_deseada) {
+    actual = actual->siguiente;
+    posicion_actual++;
+  }
+  return deseado;
+}
 
 int lista_insertar_en_posicion ( lista_t* lista, void* elemento, size_t posicion){
   if(!lista || !elemento)
@@ -46,12 +71,12 @@ int lista_insertar_en_posicion ( lista_t* lista, void* elemento, size_t posicion
   nodo_t* nuevo = calloc (1, sizeof(nodo_t));
   if(!nuevo)
     return ERROR;
-  size_t posicion_actual = 0;
-  nodo_t* actual = lista->primero;
-  while (posicion_actual != posicion-2) {
-    actual = actual->siguiente;
-    posicion_actual++;
-  }
+  if(posicion == 0)
+    return insertar_primera_posicion(lista,nuevo);
+  if(posicion == 1)
+    nodo_t* actual = buscar_nodo_en_posicion_deseada(lista, posicion--);
+  else
+    nodo_t* actual = buscar_nodo_en_posicion_deseada(lista, posicion-2);
   nuevo->siguiente = actual->siguiente;
   actual->siguiente = nuevo;
   lista->cantidad_elementos++;
