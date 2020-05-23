@@ -13,7 +13,7 @@ lista_t* lista_crear(){
 bool lista_vacia ( lista_t* lista){
   if(!lista)
     return true;
-  return lista->cantidad_elementos > 0;
+  return lista->cantidad_elementos == 0;
 }
 
 nodo_t crear_nodo(void* elemento){
@@ -83,6 +83,22 @@ int lista_insertar_en_posicion ( lista_t* lista, void* elemento, size_t posicion
   return TODO_OK;
 }
 
+int desapilar(lista_t* lista){
+  nodo_t* aux = lista->primero;
+
+}
+
+int desapilar (lista_t* lista){
+  nodo_t* aux = lista->primero;
+  while (aux->siguiente != lista->ultimo){
+    aux = aux->siguiente;
+  }
+  aux->siguiente = NULL;
+  liberar_nodo(lista->ultimo);
+  lista->ultimo = aux;
+  return TODO_OK;
+}
+
 int lista_borrar(lista_t* lista){
   if(!lista || lista_vacia(lista))
     return ERROR;
@@ -93,14 +109,7 @@ int lista_borrar(lista_t* lista){
     lista->cantidad_elementos--;
     return TODO_OK;
   }
-  nodo_t* aux = lista->primero;
-  while (aux->siguiente != lista->ultimo){
-    aux = aux->siguiente;
-  }
-  aux->siguiente = NULL;
-  liberar_nodo(lista->ultimo);
-  lista->ultimo = aux;
-  return TODO_OK;
+  return desapilar(lista);
 }
 
 
