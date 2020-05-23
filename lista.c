@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include "lista.h"
 
+//Operaciones generales
+
 void liberar_nodo (nodo_t* nodo){
   free(nodo);
 }
@@ -23,8 +25,21 @@ nodo_t crear_nodo(void* elemento){
   nuevo->elemento = elemento;
   return nuevo;
 }
+void lista_destruir(lista_t* lista){
+  if (!lista)
+  return;
+  nodo_t* aux = lista->primero;
+  while (lista->cantidad_elementos > 0){
+    lista->primero = aux->siguiente;
+    liberar_nodo(aux);
+    aux = lista->primero;
+  }
+  free(lista);
+}
 
-lista_t* apilar( lista_t* lista, nodo_t* nuevo ){
+//Operaciones de lista
+
+lista_t* insertar_al_final( lista_t* lista, nodo_t* nuevo ){
   lista->ultimo.siguiente = nuevo;
   lista->ultimo = nuevo;
   lista->cantidad_elementos++;
@@ -49,12 +64,12 @@ int lista_insertar(lista_t* lista, void* elemento){
     lista = insertar_primer_elemento(lista, nuevo);
     return TODO_OK;
   }
-  lista = apilar(lista,nuevo);
+  lista = insertar_al_final(lista,nuevo);
   return TODO_OK;
 }
 
-nodo_t* buscar_nodo_en_posicion_deseada(lista_t* lista, size_t posicion_deseada){
-  nodo_t* deseado = lista->primero;
+nodo_t* buscar_nodo_en_posicion_deseada(lista_t* lista, nodo_t* primer_nodo, size_t posicion_deseada){
+  nodo_t* deseado = primer_nodo;
   size_t posicion_actual = 0;
   while (posicion_actual != posicion_deseada) {
     deseado = deseado->siguiente;
@@ -76,25 +91,40 @@ int lista_insertar_en_posicion ( lista_t* lista, void* elemento, size_t posicion
   if(posicion == 1)
     nodo_t* actual = lista->primero;
   else
-    nodo_t* actual = buscar_nodo_en_posicion_deseada(lista, posicion-2);
+    nodo_t* actual = buscar_nodo_en_posicion_deseada(lista,lista->primero, posicion-2);
   nuevo->siguiente = actual->siguiente;
   actual->siguiente = nuevo;
   lista->cantidad_elementos++;
   return TODO_OK;
 }
 
-int desapilar (lista_t* lista){
+int lista_borrar_de_posicion(lista_t* lista, size_t posicion){
+  if(!lista)
+  return ERROR;
+  if(posicion >= lista->cantidad_elementos)
+  return lista_borrar(lista);
+  nodo_t* aux;
+  if(posicion == 1)
+  aux = buscar_nodo_en_posicion_deseada(lista, posicion--);
+  else
+  aux = buscar_nodo_en_posicion_deseada(lista,posicion -2);
+  nodo_t* a_eliminar = aux->siguiente;
+  aux->siguiente = a_eliminar->siguiente;
+  liberar_nodo(a_eleminar);
+  return TODO_OK;
+}
+
+lista_t* desencolar (lista_t* lista){
   nodo_t* aux = lista->primero;
   nodo_t* aux = buscar_nodo_en_posicion_deseada(lista, lista->cantidad_elementos - 2);
   aux->siguiente = NULL;
   liberar_nodo(lista->ultimo);
   lista->ultimo = aux;
-  return TODO_OK;
+  return lista;
 }
-
 int lista_borrar(lista_t* lista){
   if(!lista || lista_vacia(lista))
-    return ERROR;
+  return ERROR;
   if(lista->cantidad_elementos == 1){
     //Se vacia la lista
     liberar_nodo(lista->primero);
@@ -103,25 +133,10 @@ int lista_borrar(lista_t* lista){
     lista->cantidad_elementos--;
     return TODO_OK;
   }
-  return desapilar(lista);
-}
-
-
-int lista_borrar_de_posicion(lista_t* lista, size_t posicion){
-  if(!lista)
-    return ERROR;
-  if(posicion >= lista->cantidad_elementos)
-    return lista_borrar(lista);
-  nodo_t* aux;
-  if(posicion == 1)
-    aux = buscar_nodo_en_posicion_deseada(lista, posicion--);
-  else
-    aux = buscar_nodo_en_posicion_deseada(lista,posicion -2);
-  nodo_t* a_eliminar = aux->siguiente;
-  aux->siguiente = a_eliminar->siguiente;
-  liberar_nodo(a_eleminar);
+  lista = desencolar(lista);
   return TODO_OK;
 }
+
 
 void* lista_elemento_en_posicion (lista_t* lista, size_t posicion){
   if(!lista || (posicion >= lista->cantidad_elementos) )
@@ -145,6 +160,13 @@ size_t lista_elementos (lista_t* lista){
     return 0;
   return lista->cantidad_elementos;
 }
+//Operaciones para la pila
+
+lista_t* apilar(lista_t* lista, nodo_t* nuevo){
+  nuevo->siguiente = lista->ultimo;
+  lista->ultimo = nuevo;
+  return lista;
+}
 
 int lista_apilar(lista_t* lista, void* elemento){
   if(!lista || !elemento)
@@ -154,25 +176,13 @@ int lista_apilar(lista_t* lista, void* elemento){
     return ERROR;
   lista = apilar(lista,nuevo);
   return TODO_OK;
-    //Fijarte de armar mas primitivas
-}
-
-void lista_destruir(lista_t* lista){
-  if (!lista)
-    return;
-  nodo_t* aux = lista->primero;
-  while (lista->cantidad_elementos > 0){
-    lista->primero = aux->siguiente;
-    liberar_nodo(aux);
-    aux = lista->primero;
-  }
-  free(lista);
 }
 
 
 
 
 
+//Operaciones lista iterador
 
 
 
