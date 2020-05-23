@@ -57,7 +57,7 @@ nodo_t* buscar_nodo_en_posicion_deseada(lista_t* lista, size_t posicion_deseada)
   nodo_t* deseado = lista->primero;
   size_t posicion_actual = 0;
   while (posicion_actual != posicion_deseada) {
-    actual = actual->siguiente;
+    deseado = deseado->siguiente;
     posicion_actual++;
   }
   return deseado;
@@ -74,7 +74,7 @@ int lista_insertar_en_posicion ( lista_t* lista, void* elemento, size_t posicion
   if(posicion == 0)
     return insertar_primera_posicion(lista,nuevo);
   if(posicion == 1)
-    nodo_t* actual = buscar_nodo_en_posicion_deseada(lista, posicion--);
+    nodo_t* actual = lista->primero;
   else
     nodo_t* actual = buscar_nodo_en_posicion_deseada(lista, posicion-2);
   nuevo->siguiente = actual->siguiente;
@@ -128,13 +128,10 @@ void* lista_elemento_en_posicion (lista_t* lista, size_t posicion){
     return NULL;
   if( posicion == lista->cantidad_elementos--)
     return lista->ultimo.elemento;
-  nodo_t* aux = lista->primero;
-  size_t posicion = 0;
-  while (posicion_actual != posicion--){
-    aux = aux->siguiente;
-    posicion_actual++;
-  }
-  return aux->elemento;
+  if (posicion == 0)
+    return lista->ultimo.elemento;
+  nodo_t* deseado = buscar_nodo_en_posicion_deseada(lista,posicion);
+  return deseado->elemento;
 }
 
 void* lista_ultimo(lista_t* lista){
@@ -152,6 +149,11 @@ size_t lista_elementos (lista_t* lista){
 int lista_apilar(lista_t* lista, void* elemento){
   if(!lista || !elemento)
     return ERROR;
+  nodo_t* nuevo = crear_nodo(elemento);
+  if(!nuevo)
+    return ERROR;
+  lista = apilar(lista,nuevo);
+  return TODO_OK;
     //Fijarte de armar mas primitivas
 }
 
