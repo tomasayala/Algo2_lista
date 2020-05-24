@@ -7,6 +7,14 @@ void liberar_nodo (nodo_t* nodo){
   free(nodo);
 }
 
+lista_t* vaciar_lista(lista_t* lista){
+  liberar_nodo(lista->primero);
+  lista->primero = NULL;
+  lista->ultimo = NULL;
+  lista->cantidad_elementos = 0;
+  return lista;
+}
+
 lista_t* lista_crear(){
   lista_t* lista = calloc (1, sizeof (lista_t));
   return lista;
@@ -14,17 +22,18 @@ lista_t* lista_crear(){
 
 bool lista_vacia ( lista_t* lista){
   if(!lista)
-    return true;
+    return false;
   return lista->cantidad_elementos == 0;
 }
 
-nodo_t crear_nodo(void* elemento){
-  nodo_t nuevo = calloc(1, sizeof(nodo_t));
+nodo_t* crear_nodo(void* elemento){
+  nodo_t* nuevo = calloc(1, sizeof(nodo_t));
   if(!nuevo)
     return NULL;
   nuevo->elemento = elemento;
   return nuevo;
 }
+
 void lista_destruir(lista_t* lista){
   if (!lista)
     return;
@@ -51,7 +60,7 @@ nodo_t* buscar_nodo_en_posicion_deseada(lista_t* lista, nodo_t* primer_nodo, siz
 //Operaciones de lista
 
 lista_t* insertar_al_final( lista_t* lista, nodo_t* nuevo ){
-  lista->ultimo.siguiente = nuevo;
+  lista->ultimo->siguiente = nuevo;
   lista->ultimo = nuevo;
   lista->cantidad_elementos++;
   return lista;
@@ -146,9 +155,9 @@ void* lista_elemento_en_posicion (lista_t* lista, size_t posicion){
   if(!lista || (posicion >= lista->cantidad_elementos) )
     return NULL;
   if( posicion == lista->cantidad_elementos--)
-    return lista->ultimo.elemento;
+    return lista->ultimo->elemento;
   if (posicion == 0)
-    return lista->ultimo.elemento;
+    return lista->ultimo->elemento;
   nodo_t* deseado = buscar_nodo_en_posicion_deseada(lista,posicion);
   return deseado->elemento;
 }
@@ -156,7 +165,7 @@ void* lista_elemento_en_posicion (lista_t* lista, size_t posicion){
 void* lista_ultimo(lista_t* lista){
   if(!lista|| lista_vacia(lista) )
     return NULL;
-  return lista->ultimo.elemento;
+  return lista->ultimo->elemento;
 }
 
 size_t lista_elementos (lista_t* lista){
@@ -167,8 +176,9 @@ size_t lista_elementos (lista_t* lista){
 //Operaciones para la pila
 
 lista_t* apilar(lista_t* lista, nodo_t* nuevo){
-  nuevo->siguiente = lista->ultimo;
+  lista->ultimo->siguiente = nuevo;
   lista->ultimo = nuevo;
+  lista->cantidad_elementos++;
   return lista;
 }
 
@@ -191,7 +201,7 @@ int lista_desapilar(lista_t* lista){
 void* lista_tope (lista_t* lista){
   if(!lista || lista_vacia(lista))
     return NULL;
-  return lista->ultimo.elemento;
+  return lista->ultimo->elemento;
 }
 
 
@@ -238,7 +248,7 @@ int lista_desencolar(lista_t* lista){
 void* lista_primero(lista_t* lista){
   if(!lista || lista_vacia(lista))
     return NULL;
-  return lista->primero.elemento;
+  return lista->primero->elemento;
 }
 
 //Operaciones lista iterador
@@ -260,7 +270,7 @@ lista_iterador_t* lista_iterador_crear(lista_t* lista){
 bool lista_iterador_tiene_siguiente (lista_iterador_t* iterador){
   if(!iterador)
     return NULL;
-  else if(iterador->indice.siguiente == NULL)
+  else if(iterador->indice->siguiente == NULL)
     return false;
   else
     return true;
@@ -269,8 +279,8 @@ bool lista_iterador_tiene_siguiente (lista_iterador_t* iterador){
 void* lista_iterador_siguiente(lista_iterador_t* iterador){
   if(!iterador)
     return NULL;
-  void* elemento_actual = iterador->indice.elemento;
-  iterador->indice = iterador->inidice.siguiente;
+  void* elemento_actual = iterador->indice->elemento;
+  iterador->indice = iterador->inidice->siguiente;
   return elemento_actual;
 }
 
@@ -286,7 +296,7 @@ void lista_con_cada_elemento(lista* lista, void (*funcion)(void*, void*), void* 
   lista_iterador_t* iterador = lista_iterador_crear(lista);
   if(!iterador)
     return iterador;
-  void* actual = iterador->indice.elemento;
+  void* actual = iterador->indice->elemento;
   funcion(actual,contexto);
   while(lista_iterador_tiene_siguiente(iterador)){
     actual = lista_iterador_siguiente(iterador);
