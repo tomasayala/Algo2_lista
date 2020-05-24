@@ -19,9 +19,8 @@ typedef struct lista{
 }lista_t;
 
 typedef struct lista_iterador{
-    size_t indice;
     lista_t* lista;
-    nodo_t* actual;
+    nodo_t* indice;
 }lista_iterador_t;
 
 /*
