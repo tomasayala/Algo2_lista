@@ -235,14 +235,44 @@ lista_iterador_t* lista_iterador_crear(lista_t* lista){
   if(!iterador)
     return NULL;
   iterador->lista = lista;
+  iterador->indice = lista->primero;
   return iterador;
 }
 
 bool lista_iterador_tiene_siguiente (lista_iterador_t* iterador){
   if(!iterador)
     return NULL;
-  else if(iterador->actual == NULL)
+  else if(iterador->indice.siguiente == NULL)
     return false;
   else
     return true;
+}
+
+void* lista_iterador_siguiente(lista_iterador_t* iterador){
+  if(!iterador)
+    return NULL;
+  void* elemento_actual = iterador->indice.elemento;
+  iterador->indice = iterador->inidice.siguiente;
+  return elemento_actual;
+}
+
+void lista_iterador_destruir (lista_iterador_t* iterador){
+  if(!iterador)
+    return;
+  free(iterador);
+}
+
+void lista_con_cada_elemento(lista* lista, void (*funcion)(void*, void*), void* contexto){
+  if(!lista || !funcion || !contexto || lista_vacia(lista))
+    return;
+  lista_iterador_t* iterador = lista_iterador_crear(lista);
+  if(!iterador)
+    return iterador;
+  void* actual = iterador->indice.elemento;
+  funcion(actual,contexto);
+  while(lista_iterador_tiene_siguiente(iterador)){
+    actual = lista_iterador_siguiente(iterador);
+    funcion(actual, contexto);
+  }
+  lista_iterador_destruir(iterador);
 }
