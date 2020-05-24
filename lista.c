@@ -33,6 +33,7 @@ void lista_destruir(lista_t* lista){
     lista->primero = aux->siguiente;
     liberar_nodo(aux);
     aux = lista->primero;
+    lista->cantidad_elementos--;
   }
   free(lista);
 }
@@ -214,6 +215,23 @@ int lista_encolar (lista_t* lista, void* elemento){
     return TODO_OK;
   }
   lista = encolar(lista, nuevo);
+  return TODO_OK;
+}
+
+lista_t* desencolar(lista_t* desencolar){
+  if(lista->cantidad_elementos == 1){
+    return vaciar_lista(lista);
+  }
+  aux = buscar_nodo_en_posicion_deseada(lista, lista->ultimo, lista->cantidad_elementos -2);
+  liberar_nodo(lista->primero);
+  lista->primero = aux;
+  return lista;
+}
+
+int lista_desencolar(lista_t* lista){
+  if(!lista || lista_vacia(lista) )
+    return ERROR;
+  lista = desencolar(lista);
   return TODO_OK;
 }
 
