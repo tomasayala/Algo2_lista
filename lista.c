@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "lista.h"
 
 //Operaciones generales
@@ -47,7 +46,7 @@ void lista_destruir(lista_t* lista){
   free(lista);
 }
 
-nodo_t* buscar_nodo_en_posicion_deseada(lista_t* lista, nodo_t* primer_nodo, size_t posicion_deseada){
+nodo_t* buscar_nodo_en_posicion(lista_t* lista, nodo_t* primer_nodo, size_t posicion_deseada){
   nodo_t* deseado = primer_nodo;
   size_t posicion_actual = 0;
   while (posicion_actual != posicion_deseada) {
@@ -58,6 +57,13 @@ nodo_t* buscar_nodo_en_posicion_deseada(lista_t* lista, nodo_t* primer_nodo, siz
 }
 
 //Operaciones de lista
+
+lista_t* insertar_primera_posicion (lista_t* lista, nodo_t* nuevo){
+  nuevo->siguiente = lista->primero;
+  lista->primero = nuevo;
+  lista->cantidad_elementos++;
+  return lista;
+}
 
 lista_t* insertar_al_final( lista_t* lista, nodo_t* nuevo ){
   lista->ultimo->siguiente = nuevo;
@@ -81,7 +87,7 @@ int lista_insertar(lista_t* lista, void* elemento){
   nodo_t* nuevo = crear_nodo(elemento);
   if(!nuevo)
     return ERROR;
-  if (lista_vacia(lista){
+  if (lista_vacia(lista)){
     lista = insertar_primer_elemento(lista, nuevo);
     return TODO_OK;
   }
@@ -100,13 +106,31 @@ int lista_insertar_en_posicion ( lista_t* lista, void* elemento, size_t posicion
     return ERROR;
   if(posicion == 0)
     return insertar_primera_posicion(lista,nuevo);
-  if(posicion == 1)
-    nodo_t* actual = lista->primero;
   else
-    nodo_t* actual = buscar_nodo_en_posicion_deseada(lista,lista->primero, posicion-2);
+    nodo_t* actual = buscar_nodo_en_posicion(lista, lista->primero, posicion--);
   nuevo->siguiente = actual->siguiente;
   actual->siguiente = nuevo;
   lista->cantidad_elementos++;
+  return TODO_OK;
+}
+
+lista_t* desapilar (lista_t* lista){
+  nodo_t* penultimo = buscar_nodo_en_posicion(lista, lista->primero, lista->cantidad_elementos - 2);
+  penultimo->siguiente = NULL;
+  liberar_nodo(lista->ultimo);
+  lista->ultimo = penultimo;
+  lista->cantidad_elementos--;
+  return lista;
+}
+
+int lista_borrar(lista_t* lista){
+  if(!lista || lista_vacia(lista))
+  return ERROR;
+  if(lista->cantidad_elementos == 1){
+    lista = vaciar_lista(lista);
+    return TODO_OK;
+  }
+  lista = desapilar(lista);
   return TODO_OK;
 }
 
@@ -115,41 +139,15 @@ int lista_borrar_de_posicion(lista_t* lista, size_t posicion){
     return ERROR;
   if(posicion >= lista->cantidad_elementos)
     return lista_borrar(lista);
-  nodo_t* aux;
-  if(posicion == 1)
-    aux = buscar_nodo_en_posicion_deseada(lista, posicion--);
-  else
-    aux = buscar_nodo_en_posicion_deseada(lista,posicion -2);
+  if(posicion == 0)
+    return borrar_primera_posicion(lista);
+  nodo_t* aux =  buscar_nodo_en_posicion(lista, lista->primero, posicion --);
   nodo_t* a_eliminar = aux->siguiente;
   aux->siguiente = a_eliminar->siguiente;
   liberar_nodo(a_eleminar);
+  lista->cantidad_elementos--;
   return TODO_OK;
 }
-
-lista_t* desapilar (lista_t* lista){
-  nodo_t* aux = lista->primero;
-  nodo_t* aux = buscar_nodo_en_posicion_deseada(lista, lista->cantidad_elementos - 2);
-  aux->siguiente = NULL;
-  liberar_nodo(lista->ultimo);
-  lista->ultimo = aux;
-  return lista;
-}
-
-int lista_borrar(lista_t* lista){
-  if(!lista || lista_vacia(lista))
-    return ERROR;
-  if(lista->cantidad_elementos == 1){
-    //Se vacia la lista
-    liberar_nodo(lista->primero);
-    lista->primero = NULL;
-    lista->ultimo = NULL;
-    lista->cantidad_elementos--;
-    return TODO_OK;
-  }
-  lista = desapilar(lista);
-  return TODO_OK;
-}
-
 
 void* lista_elemento_en_posicion (lista_t* lista, size_t posicion){
   if(!lista || (posicion >= lista->cantidad_elementos) )
@@ -157,8 +155,8 @@ void* lista_elemento_en_posicion (lista_t* lista, size_t posicion){
   if( posicion == lista->cantidad_elementos--)
     return lista->ultimo->elemento;
   if (posicion == 0)
-    return lista->ultimo->elemento;
-  nodo_t* deseado = buscar_nodo_en_posicion_deseada(lista,posicion);
+    return lista->primero->elemento;
+  nodo_t* deseado = buscar_nodo_en_posicion(lista, lista->primero, posicion);
   return deseado->elemento;
 }
 
@@ -175,12 +173,6 @@ size_t lista_elementos (lista_t* lista){
 }
 //Operaciones para la pila
 
-lista_t* apilar(lista_t* lista, nodo_t* nuevo){
-  lista->ultimo->siguiente = nuevo;
-  lista->ultimo = nuevo;
-  lista->cantidad_elementos++;
-  return lista;
-}
 
 int lista_apilar(lista_t* lista, void* elemento){
   if(!lista || !elemento)
@@ -188,14 +180,23 @@ int lista_apilar(lista_t* lista, void* elemento){
   nodo_t* nuevo = crear_nodo(elemento);
   if(!nuevo)
     return ERROR;
-  lista = apilar(lista,nuevo);
+  if(lista_vacia(lista)){
+    lista = insertar_primer_elemento(lista,nuevo);
+    return TODO_OK;
+  }
+  lista = insertar_al_final(lista,nuevo);
   return TODO_OK;
 }
 
 int lista_desapilar(lista_t* lista){
-  if(!lista)
+  if(!lista || lista_vacia(lista))
     return ERROR;
-  return lista_borrar(lista);
+  if(lista->cantidad_elementos == 1){
+    lista = vaciar_lista(lista);
+    return TODO_OK;
+  }
+  lista = desapilar(lista);
+  return TODO_OK;
 }
 
 void* lista_tope (lista_t* lista){
@@ -229,10 +230,7 @@ int lista_encolar (lista_t* lista, void* elemento){
 }
 
 lista_t* desencolar(lista_t* desencolar){
-  if(lista->cantidad_elementos == 1){
-    return vaciar_lista(lista);
-  }
-  aux = buscar_nodo_en_posicion_deseada(lista, lista->ultimo, lista->cantidad_elementos -2);
+  aux = buscar_nodo_en_posicion(lista, lista->ultimo, lista->cantidad_elementos -2);
   liberar_nodo(lista->primero);
   lista->primero = aux;
   return lista;
@@ -241,6 +239,10 @@ lista_t* desencolar(lista_t* desencolar){
 int lista_desencolar(lista_t* lista){
   if(!lista || lista_vacia(lista) )
     return ERROR;
+    if(lista->cantidad_elementos == 1){
+      lista = vaciar_lista(lista);
+      return TODO_OK;
+    }
   lista = desencolar(lista);
   return TODO_OK;
 }
@@ -270,17 +272,14 @@ lista_iterador_t* lista_iterador_crear(lista_t* lista){
 bool lista_iterador_tiene_siguiente (lista_iterador_t* iterador){
   if(!iterador)
     return NULL;
-  else if(iterador->indice->siguiente == NULL)
-    return false;
-  else
-    return true;
+  return iterador->indice !=NULL;
 }
 
 void* lista_iterador_siguiente(lista_iterador_t* iterador){
   if(!iterador)
     return NULL;
   void* elemento_actual = iterador->indice->elemento;
-  iterador->indice = iterador->inidice->siguiente;
+  iterador->indice = iterador->indice->siguiente;
   return elemento_actual;
 }
 
@@ -293,14 +292,11 @@ void lista_iterador_destruir (lista_iterador_t* iterador){
 void lista_con_cada_elemento(lista* lista, void (*funcion)(void*, void*), void* contexto){
   if(!lista || !funcion || !contexto || lista_vacia(lista))
     return;
-  lista_iterador_t* iterador = lista_iterador_crear(lista);
-  if(!iterador)
-    return iterador;
-  void* actual = iterador->indice->elemento;
-  funcion(actual,contexto);
-  while(lista_iterador_tiene_siguiente(iterador)){
-    actual = lista_iterador_siguiente(iterador);
-    funcion(actual, contexto);
+  nodo_t* indice = lista->primero;
+  void* actual = lista->primero->elemento;
+  while(indice != NULL){
+    funcion (actual,contexto);
+    indice=indice->siguiente;
+    actual = indice->elemento;
   }
-  lista_iterador_destruir(iterador);
 }
