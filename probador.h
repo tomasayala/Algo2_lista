@@ -20,22 +20,22 @@ probador_t* crear_probador();
 void avisar_probador( probador_t* probador, char* aviso);
 
 /*
-*
-*
+* En caso de recibir un probador y una descripcion != NULL.
+* Devuelve un mensaje por pantalla si la prueba fue exitosa o no
 */
 
 void asegurar_probador(probador_t* probador, char* descripcion, bool caso);
 
 /*
-*
-*
+* En caso de recibir un probador != NULL
+* Muestra por pantalla un mensaje de cuantas pruebas exitosas resultaron de
+* todas las pruebas hechas.
 */
 
 void mostrar_estadisticas_probador(probador_t* probador);
 
 /*
-*
-*
+* Destruye un probador creado
 */
 void destruir_probador(probador_t* probador);
 
