@@ -1,5 +1,5 @@
+#include <stdlib.h>
 #include "lista.h"
-
 //Operaciones generales
 
 void liberar_nodo (nodo_t* nodo){
@@ -104,10 +104,11 @@ int lista_insertar_en_posicion ( lista_t* lista, void* elemento, size_t posicion
   nodo_t* nuevo = calloc (1, sizeof(nodo_t));
   if(!nuevo)
     return ERROR;
-  if(posicion == 0)
-    return insertar_primera_posicion(lista,nuevo);
-  else
-    nodo_t* actual = buscar_nodo_en_posicion(lista, lista->primero, posicion--);
+  if(posicion == 0){
+    lista = insertar_primera_posicion(lista,nuevo);
+    return TODO_OK;
+  }
+  nodo_t* actual = buscar_nodo_en_posicion(lista, lista->primero, posicion--);
   nuevo->siguiente = actual->siguiente;
   actual->siguiente = nuevo;
   lista->cantidad_elementos++;
@@ -134,17 +135,27 @@ int lista_borrar(lista_t* lista){
   return TODO_OK;
 }
 
+lista_t* borrar_primera_posicion(lista_t* lista){
+  nodo_t* a_eleminar = lista->primero;
+  lista->primero = (nodo_t*) lista->primero->siguiente;
+  liberar_nodo(a_eleminar);
+  lista->cantidad_elementos--;
+  return lista;
+}
+
 int lista_borrar_de_posicion(lista_t* lista, size_t posicion){
   if(!lista)
     return ERROR;
   if(posicion >= lista->cantidad_elementos)
     return lista_borrar(lista);
-  if(posicion == 0)
-    return borrar_primera_posicion(lista);
+  if(posicion == 0){
+    lista = borrar_primera_posicion(lista);
+    return TODO_OK;
+  }
   nodo_t* aux =  buscar_nodo_en_posicion(lista, lista->primero, posicion --);
   nodo_t* a_eliminar = aux->siguiente;
   aux->siguiente = a_eliminar->siguiente;
-  liberar_nodo(a_eleminar);
+  liberar_nodo(a_eliminar);
   lista->cantidad_elementos--;
   return TODO_OK;
 }
@@ -229,20 +240,20 @@ int lista_encolar (lista_t* lista, void* elemento){
   return TODO_OK;
 }
 
-lista_t* desencolar(lista_t* desencolar){
-  aux = buscar_nodo_en_posicion(lista, lista->ultimo, lista->cantidad_elementos -2);
+lista_t* desencolar(lista_t* lista){
+  nodo_t* aux = buscar_nodo_en_posicion(lista, lista->ultimo, lista->cantidad_elementos -2);
   liberar_nodo(lista->primero);
   lista->primero = aux;
   return lista;
 }
 
 int lista_desencolar(lista_t* lista){
-  if(!lista || lista_vacia(lista) )
+  if(!lista || lista_vacia(lista))
     return ERROR;
-    if(lista->cantidad_elementos == 1){
-      lista = vaciar_lista(lista);
-      return TODO_OK;
-    }
+  if(lista->cantidad_elementos == 1){
+    lista = vaciar_lista(lista);
+    return TODO_OK;
+  }
   lista = desencolar(lista);
   return TODO_OK;
 }
@@ -289,7 +300,7 @@ void lista_iterador_destruir (lista_iterador_t* iterador){
   free(iterador);
 }
 
-void lista_con_cada_elemento(lista* lista, void (*funcion)(void*, void*), void* contexto){
+void lista_con_cada_elemento(lista_t* lista, void (*funcion)(void*, void*), void* contexto){
   if(!lista || !funcion || !contexto || lista_vacia(lista))
     return;
   nodo_t* indice = lista->primero;
