@@ -4,7 +4,10 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-typedef struct probador probador_t;
+typedef struct probador{
+  size_t pruebas_totales;
+  size_t pruebas_exitosas;
+}probador_t;
 
 /*
 * Devuelve los una direccion de memoria al probador o NULL

@@ -1,11 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "probador.h"
-
-typedef struct probador{
-  size_t pruebas_totales;
-  size_t pruebas_exitosas;
-}probador_t;
-
 
 
 probador_t* crear_probador(){
