@@ -7,6 +7,8 @@
 typedef struct probador{
   size_t pruebas_totales;
   size_t pruebas_exitosas;
+  size_t pruebas_locales;
+  size_t pruebas_locales_exitosas;
 }probador_t;
 
 /*
@@ -32,10 +34,19 @@ void asegurar_probador(probador_t* probador, char* descripcion, bool caso);
 /*
 * En caso de recibir un probador != NULL
 * Muestra por pantalla un mensaje de cuantas pruebas exitosas resultaron de
-* todas las pruebas hechas.
+* todas las pruebas hechas, a lo largo de todos los tests.
 */
 
-void mostrar_estadisticas_probador(probador_t* probador);
+void mostrar_estadisticas_totales(probador_t* probador);
+
+/*
+* En caso de recibir un probador !=NULL
+* Muestras las cantidad de pruebas hechas para un determinado set de pruebas para una funcion
+* y la cantidad de pruebas exitosas
+* Al final de la funcion las vuelve a poner en 0 para un nuevo set de pruebas 
+*/
+
+void mostrar_estadisticas_locales(probador_t* probador);
 
 /*
 * Destruye un probador creado
