@@ -4,6 +4,7 @@
 
 void liberar_nodo (nodo_t* nodo){
   free(nodo);
+  nodo = NULL;
 }
 
 lista_t* vaciar_lista(lista_t* lista){
@@ -21,36 +22,23 @@ lista_t* lista_crear(){
 
 bool lista_vacia ( lista_t* lista){
   if(!lista)
-    return true;
+    return false;
   return lista->cantidad_elementos == 0;
 }
 
 nodo_t* crear_nodo(void* elemento){
-  nodo_t* nuevo = malloc(sizeof(nodo_t));
+  nodo_t* nuevo = calloc(1, sizeof(nodo_t));
   if(!nuevo)
     return NULL;
   nuevo->elemento = elemento;
-  nuevo->siguiente = NULL;
   return nuevo;
 }
 
-void lista_destruir(lista_t* lista){
-  if (!lista)
-    return;
-  nodo_t* aux = lista->primero;
-  while (lista->cantidad_elementos > 0){
-    lista->primero = aux->siguiente;
-    liberar_nodo(aux);
-    aux = lista->primero;
-    lista->cantidad_elementos--;
-  }
-  free(lista);
-}
 
 nodo_t* buscar_nodo_en_posicion(lista_t* lista, nodo_t* primer_nodo, size_t posicion_deseada){
   nodo_t* deseado = primer_nodo;
   size_t posicion_actual = 0;
-  while (posicion_actual != posicion_deseada){
+  while (posicion_actual != posicion_deseada) {
     deseado = deseado->siguiente;
     posicion_actual++;
   }
@@ -136,6 +124,16 @@ int lista_borrar(lista_t* lista){
   return TODO_OK;
 }
 
+void lista_destruir(lista_t* lista){
+  if (!lista)
+    return;
+  int borrado = lista_borrar(lista);
+  while ( !lista_vacia(lista) && borrado == TODO_OK){
+    borrado = lista_borrar(lista);
+  }
+  free(lista);
+}
+
 lista_t* borrar_primera_posicion(lista_t* lista){
   nodo_t* a_eleminar = lista->primero;
   lista->primero = (nodo_t*) lista->primero->siguiente;
@@ -162,7 +160,7 @@ int lista_borrar_de_posicion(lista_t* lista, size_t posicion){
 }
 
 void* lista_elemento_en_posicion (lista_t* lista, size_t posicion){
-  if(!lista || (posicion >= lista->cantidad_elementos) || lista_vacia(lista))
+  if(!lista || (posicion >= lista->cantidad_elementos) )
     return NULL;
   if( posicion == lista->cantidad_elementos-1)
     return lista->ultimo->elemento;
@@ -310,7 +308,7 @@ void lista_con_cada_elemento(lista_t* lista, void (*funcion)(void*, void*), void
   while(indice != NULL){
     funcion (actual,contexto);
     indice=indice->siguiente;
-    if (indice)
-      actual = indice->elemento;
+    if(indice)
+    actual = indice->elemento;
   }
 }
