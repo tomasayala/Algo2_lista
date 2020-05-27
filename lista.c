@@ -22,7 +22,7 @@ lista_t* lista_crear(){
 
 bool lista_vacia ( lista_t* lista){
   if(!lista)
-    return false;
+    return true;
   return lista->cantidad_elementos == 0;
 }
 
