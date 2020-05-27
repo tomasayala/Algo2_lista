@@ -21,15 +21,16 @@ lista_t* lista_crear(){
 
 bool lista_vacia ( lista_t* lista){
   if(!lista)
-    return false;
+    return true;
   return lista->cantidad_elementos == 0;
 }
 
 nodo_t* crear_nodo(void* elemento){
-  nodo_t* nuevo = calloc(1, sizeof(nodo_t));
+  nodo_t* nuevo = malloc(sizeof(nodo_t));
   if(!nuevo)
     return NULL;
   nuevo->elemento = elemento;
+  nuevo->siguiente = NULL;
   return nuevo;
 }
 
