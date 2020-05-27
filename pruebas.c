@@ -175,7 +175,22 @@ void pruebas_de_apilar(probador_t* probador){
   mostrar_estadisticas_locales(probador);
 }
 
-
+void pruebas_de_desapilar(probador_t* probador){
+  int a = 0;
+  int b = 1;
+  int c = 2;
+  lista_t* pila = lista_crear();
+  asegurar_probador(probador,"Se intenta desapilar en una lista nula", lista_desapilar(NULL) == FALLO);
+  asegurar_probador(probador,"Se intenta desapilar en una pila vacia", lista_desapilar(pila) == FALLO);
+  lista_apilar(pila,&a);
+  asegurar_probador(probador,"Se intenta desapilar una pila con un solo elemento", lista_desapilar(pila) == EXITO && lista_vacia(pila) == true);
+  lista_apilar(pila,&b);
+  lista_apilar(pila,&c);
+  asegurar_probador(probador,"Se intenta desapilar una pila con mas de un elemento", lista_desapilar(pila) == EXITO && lista_elementos(pila) == 1);
+  // Caja blanca asegurar_probador(probador,"Se intenta desapilar una pila con mas de un elemento", lista_desapilar(pila) == EXITO && lista->cantidad_elementos == 1 && lista->primero == lista->ultimo );
+  lista_destruir(lista);
+  mostrar_estadisticas_locales(probador);
+}
 
 void pruebas_de_pila(probador_t* probador){
   /*
@@ -185,6 +200,7 @@ void pruebas_de_pila(probador_t* probador){
   */
   pruebas_de_apilar(probador);
   pruebas_de_desapilar(probador);
+  pruebas_de_lista_tope(probador);
 
 
 
