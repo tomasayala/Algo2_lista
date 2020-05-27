@@ -49,7 +49,7 @@ void lista_destruir(lista_t* lista){
 nodo_t* buscar_nodo_en_posicion(lista_t* lista, nodo_t* primer_nodo, size_t posicion_deseada){
   nodo_t* deseado = primer_nodo;
   size_t posicion_actual = 0;
-  while (posicion_actual != posicion_deseada) {
+  while (posicion_actual != posicion_deseada){
     deseado = deseado->siguiente;
     posicion_actual++;
   }
@@ -161,7 +161,7 @@ int lista_borrar_de_posicion(lista_t* lista, size_t posicion){
 }
 
 void* lista_elemento_en_posicion (lista_t* lista, size_t posicion){
-  if(!lista || (posicion >= lista->cantidad_elementos) )
+  if(!lista || (posicion >= lista->cantidad_elementos) || lista_vacia(lista))
     return NULL;
   if( posicion == lista->cantidad_elementos-1)
     return lista->ultimo->elemento;
