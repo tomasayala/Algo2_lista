@@ -9,7 +9,7 @@
 
 typedef struct nodo{
   void* elemento;
-  void* siguiente;
+  struct nodo* siguiente;
 }nodo_t;
 
 typedef struct lista{
