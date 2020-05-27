@@ -213,18 +213,30 @@ void pruebas_de_lista_tope(probador_t* probador){
 }
 
 void pruebas_de_pila(probador_t* probador){
-  /*
-  int a = 0;
-  int b = 1;
-  int c = 2;
-  */
   pruebas_de_apilar(probador);
   pruebas_de_desapilar(probador);
   pruebas_de_lista_tope(probador);
-
-
-
   printf("Fin de las pruebas de pila\n\n");
+}
+
+void pruebas_encolar(probador_t* probador){
+  int a = 0;
+  int b = 1;
+  int c = 2;
+  printf("Pruebas de lista_encolar\n");
+  lista_t* cola = lista_crear();
+  asegurar_probador(probador,"Se pasa una cola nula", lista_encolar(NULL,&a) == FALLO);
+  asegurar_probador(probador,"Se pasa un elemento nulo", lista_encolar(cola,NULL) == FALLO);
+  asegurar_probador(probador,"Inserta correctamente el primer elemento de una cola vacia", lista_encolar(cola,&a) == EXITO && lista_primero(cola) == &a && lista_ultimo(cola) == &a);
+  asegurar_probador(probador,"Se inserta correctamente un elemento en una cola no vacia", lista_encolar(cola,&b) == EXITO && lista_ultimo(cola) == &b);
+  lista_destruir(cola);
+  mostrar_estadisticas_locales(probador);
+}
+
+void pruebas_de_cola(probador_t* probador){
+  pruebas_encolar(probador);
+//  pruebas_desencolar(probador);
+//  pruebas_lista_primero(probador);
 }
 
 int main(){
@@ -234,8 +246,10 @@ int main(){
   pruebas_de_lista(probador);
   printf("\t\t\t Pruebas de pila\n");
   pruebas_de_pila(probador);
-  /*
+  printf("\t\t\t Pruebas de cola\n");
   pruebas_de_cola(probador);
+
+  /*
   pruebas_de_iterador(probador);
   */
   mostrar_estadisticas_totales(probador);
