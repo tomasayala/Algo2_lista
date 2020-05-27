@@ -251,10 +251,28 @@ void pruebas_desencolar(probador_t* probador){
   mostrar_estadisticas_locales(probador);
 }
 
+void pruebas_lista_primero(probador_t* probador){
+  printf("Pruebas de lista_primero\n");
+  int a = 0;
+  int b = 1;
+  int c = 2;
+  lista_t* cola = lista_crear();
+  asegurar_probador(probador,"Se pasa una cola nula", lista_primero(NULL) == NULL);
+  asegurar_probador(probador,"Se pasa una cola vacia", lista_primero(cola) == NULL);
+  lista_encolar(cola,&a);
+  asegurar_probador(probador,"Se pasa una cola con un unico elemento", lista_primero(cola) == &a);
+  lista_desencolar(cola);
+  lista_encolar(cola,&c);
+  lista_encolar(cola,&b);
+  asegurar_probador(probador,"Se pasa una cola con multiples elementos", lista_primero(cola) == &c);
+  lista_destruir(cola);
+  mostrar_estadisticas_locales(probador);
+}
+
 void pruebas_de_cola(probador_t* probador){
   pruebas_encolar(probador);
   pruebas_desencolar(probador);
-//  pruebas_lista_primero(probador);
+  pruebas_lista_primero(probador);
 }
 
 int main(){
