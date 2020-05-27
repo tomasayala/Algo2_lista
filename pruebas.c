@@ -72,7 +72,7 @@ void pruebas_de_lista(probador_t* probador){
   // Pruebas de lista_borrar_de_posicion
   {
     printf("Pruebas de lista_borrar_de_posicion\n");
-    lista_t* lista = lista_crear(lista);
+    lista_t* lista = lista_crear();
     asegurar_probador(probador, "Se pasa una lista nula", lista_borrar_de_posicion(NULL,0) == FALLO);
     asegurar_probador(probador,"Se pasa una lista vacia", lista_borrar_de_posicion(lista,0) == FALLO);
     lista_insertar(lista,&a);
@@ -82,13 +82,35 @@ void pruebas_de_lista(probador_t* probador){
     lista_insertar(lista,&z);
     asegurar_probador(probador,"Se pasa una posicion de 100 a una lista con 5 elementos", lista_borrar_de_posicion(lista,100) == EXITO && lista->ultimo->elemento == &d);
     lista_insertar(lista,&z);
-    asegurar_probador(probador,"Se pide borrar la posicion 2 de una lista de 4 elementos", lista_borrar_de_posicion(lista,1) == EXITO &&  )
-
-
+    asegurar_probador(probador,"Se pide borrar la posicion 1 de una lista de 5 elementos", lista_borrar_de_posicion(lista,1) == EXITO && lista->primero->siguiente->elemento == &c);
+    asegurar_probador(probador,"Se pide borrar la posicion 0 de una lista de 4 elementos", lista_borrar_de_posicion(lista,0) == EXITO && lista->primero->elemento == &c);
     lista_destruir(lista);
     mostrar_estadisticas_locales(probador);
     printf("\n");
   }
+
+  //Pruebas de lista_elemento_en_posicion
+
+  {
+    printf("Pruebas de lista_elemento_en_posicion\n");
+    lista_t* lista = lista_crear();
+    asegurar_probador(probador,"Se pasa una lista nula", lista_elemento_en_posicion(NULL,0) == NULL);
+    asegurar_probador(probador,"Se pasa una lista vacia", lista_elemento_en_posicion(lista,0) == NULL);
+    asegurar_probador(probador,"Se pasa una lista vacia", lista_elemento_en_posicion(lista,0) == NULL);
+    lista_insertar(lista,&a);
+    lista_insertar(lista,&b);
+    lista_insertar(lista,&c);
+    lista_insertar(lista,&d);
+    lista_insertar(lista,&z);
+    asegurar_probador(probador,"Se pide la posicion 100 de una lista de 5 elementos", lista_elemento_en_posicion(lista,100) == NULL);
+    asegurar_probador(probador,"Se pide el primer elemento de una lista de 5 elementos", lista_elemento_en_posicion(lista,0) == &a);
+    asegurar_probador(probador,"Se pide el ultimo elemento de una lista de 5 elementos", lista_elemento_en_posicion(lista,4) == &z);
+    asegurar_probador(probador,"Se pide la posicion 2 de una lista de 5 elementos", lista_elemento_en_posicion(lista,2)  == &c);
+    lista_destruir(lista);
+    mostrar_estadisticas_locales(probador);
+    printf("\n");
+  }
+  //Pruebas de lista_elementos
 }
 
 int main(){
