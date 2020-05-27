@@ -7,7 +7,15 @@
 const int EXITO = 0;
 const int FALLO = -1;
 
+void mostrar_elemento(void* elemento, void* contador){
+  if(elemento && contador)
+    printf("Elemento %i: %c \n", (*(int*)contador)++, *(char*)elemento);
+}
+
 void pruebas_de_lista(probador_t* probador){
+
+  void (*funcion)(void*,void*) = mostrar_elemento;
+  int contador = 0;
 
   char a = 'a';
   char b = 'b';
@@ -19,12 +27,11 @@ void pruebas_de_lista(probador_t* probador){
     printf("Pruebas de lista crear y lista vacia y lista_destruir\n");
     avisar_probador(probador, "Se crea una lista");
     lista_t* lista = lista_crear();
-    asegurar_probador(probador, "Se pasa una lista nula", lista_vacia(NULL) == false);
+    asegurar_probador(probador, "Se pasa una lista nula y devuelve true", lista_vacia(NULL) == true);
     asegurar_probador(probador, "lista_vacia recibe una lista vacia", lista_vacia(lista) == true );
     avisar_probador(probador, "Se destruye la lista vacia");
     lista_destruir(lista);
     mostrar_estadisticas_locales(probador);
-    printf("\n");
   }
   //Pruebas de lista_insertar y ultima prueba de lista_vacia y lista_destruir
   {
@@ -38,7 +45,6 @@ void pruebas_de_lista(probador_t* probador){
     avisar_probador(probador,"Se destruye una lista no vacia");
     lista_destruir(lista);
     mostrar_estadisticas_locales(probador);
-    printf("\n");
   }
   //Pruebas de lista insertar en posicion
   {
@@ -52,7 +58,6 @@ void pruebas_de_lista(probador_t* probador){
     asegurar_probador(probador,"Se pasa un elemento en la posicion 1 y lo inserta bien", lista_insertar_en_posicion(lista,&d,1) == EXITO && lista->primero->siguiente->elemento == &d);
     lista_destruir(lista);
     mostrar_estadisticas_locales(probador);
-    printf("\n");
   }
   //Pruebas de lista_borrar
   {
@@ -67,7 +72,6 @@ void pruebas_de_lista(probador_t* probador){
     asegurar_probador(probador,"Se pasa una lista con mas de un elemento y lo borra bien", lista_borrar(lista) == EXITO && lista->primero->siguiente == NULL);
     lista_destruir(lista);
     mostrar_estadisticas_locales(probador);
-    printf("\n");
   }
   // Pruebas de lista_borrar_de_posicion
   {
@@ -86,7 +90,6 @@ void pruebas_de_lista(probador_t* probador){
     asegurar_probador(probador,"Se pide borrar la posicion 0 de una lista de 4 elementos", lista_borrar_de_posicion(lista,0) == EXITO && lista->primero->elemento == &c);
     lista_destruir(lista);
     mostrar_estadisticas_locales(probador);
-    printf("\n");
   }
 
   //Pruebas de lista_elemento_en_posicion
@@ -95,7 +98,6 @@ void pruebas_de_lista(probador_t* probador){
     printf("Pruebas de lista_elemento_en_posicion\n");
     lista_t* lista = lista_crear();
     asegurar_probador(probador,"Se pasa una lista nula", lista_elemento_en_posicion(NULL,0) == NULL);
-    asegurar_probador(probador,"Se pasa una lista vacia", lista_elemento_en_posicion(lista,0) == NULL);
     asegurar_probador(probador,"Se pasa una lista vacia", lista_elemento_en_posicion(lista,0) == NULL);
     lista_insertar(lista,&a);
     lista_insertar(lista,&b);
@@ -108,7 +110,6 @@ void pruebas_de_lista(probador_t* probador){
     asegurar_probador(probador,"Se pide la posicion 2 de una lista de 5 elementos", lista_elemento_en_posicion(lista,2)  == &c);
     lista_destruir(lista);
     mostrar_estadisticas_locales(probador);
-    printf("\n");
   }
   //Pruebas de lista_ultimo
   {
@@ -122,7 +123,6 @@ void pruebas_de_lista(probador_t* probador){
     asegurar_probador(probador,"Se pasa una lista con mas de un elemento y devuelve el ultimo", lista_ultimo(lista) == &b);
     lista_destruir(lista);
     mostrar_estadisticas_locales(probador);
-    printf("\n");
   }
   //Pruebas de lista_elementos
   {
@@ -135,10 +135,47 @@ void pruebas_de_lista(probador_t* probador){
     asegurar_probador(probador,"Se pasa una lista con dos elementos y devuelve el numero correcto", lista_elementos(lista) == lista->cantidad_elementos);
     lista_destruir(lista);
     mostrar_estadisticas_locales(probador);
-    printf("\n");
   }
+  //Pruebas de lista_con_cada_elemento
+  {
+    printf("Pruebas de lista_con_cada_elemento\n");
+    lista_t* lista = lista_crear();
+    lista_insertar(lista,&a);
+    lista_t* lista_vacia = lista_crear();
+    avisar_probador(probador,"Se pasa una lista nula, no tendria que imprimerse nada");
+    lista_con_cada_elemento(NULL,funcion,(void*)&contador);
+    avisar_probador(probador,"Se pasa una funcion nula, no tendria que imprimerse nada");
+    lista_con_cada_elemento(lista,NULL,(void*)&contador);
+    avisar_probador(probador,"Se pasa un contexto nulo, no tendria que imprimerse nada");
+    lista_con_cada_elemento(lista,funcion,NULL);
+    avisar_probador(probador,"Se pasa una lista vacia, no tendria que imprimerse nada");
+    lista_con_cada_elemento(lista_vacia, funcion, (void*)&contador);
+    lista_insertar(lista,&b);
+    lista_insertar(lista,&c);
+    lista_insertar(lista,&d);
+    avisar_probador(probador,"Se pasa una lista no vacia, tienen que imprimir los elementos a b c d");
+    lista_con_cada_elemento(lista,funcion,(void*)&contador);
+    lista_destruir(lista);
+    lista_destruir(lista_vacia);
+  }
+
   printf("Fin de las pruebas de la lista\n\n");
 }
+
+void pruebas_de_apilar(probador_t* probador){
+  int a = 0;
+  int b = 1;
+  lista_t* pila = lista_crear();
+  asegurar_probador(probador,"Se intenta apilar en una pila nula", lista_apilar(NULL,&a) == FALLO);
+  asegurar_probador(probador,"Se intenta apilar un elemento nulo en una pila no nula", lista_apilar(pila,NULL) == FALLO);
+  asegurar_probador(probador,"Se inserta el primer elemento en la pila", lista_apilar(pila,&a) == EXITO && lista_ultimo(pila) == lista_primero(pila) && lista_ultimo(pila) == &a);
+  // Caja blanca  asegurar_probador(probador,"Se inserta el primer elemento en la pila", lista_apilar(pila,&a) == EXITO && lista->primero->elemento == lista->ultimo->elemento);
+  asegurar_probador(probador,"Se otro elemento en la pila correctamente al final", lista_apilar(pila,&b) == EXITO && lista_ultimo(pila) == &b);
+  lista_destruir(lista);
+  mostrar_estadisticas_locales(probador);
+}
+
+
 
 void pruebas_de_pila(probador_t* probador){
   /*
@@ -146,6 +183,8 @@ void pruebas_de_pila(probador_t* probador){
   int b = 1;
   int c = 2;
   */
+  pruebas_de_apilar(probador);
+  pruebas_de_desapilar(probador);
 
 
 
