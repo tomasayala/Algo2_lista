@@ -49,7 +49,7 @@ void mostrar_estadisticas_totales(probador_t* probador){
 void mostrar_estadisticas_locales(probador_t* probador){
   if(!probador)
     return;
-  printf("Pruebas exitosas %zu de %zu\n", probador->pruebas_locales_exitosas, probador->pruebas_locales);
+  printf("Pruebas exitosas %zu de %zu\n\n", probador->pruebas_locales_exitosas, probador->pruebas_locales);
   probador->pruebas_locales = 0;
   probador->pruebas_locales_exitosas = 0;
 }

@@ -137,15 +137,27 @@ void pruebas_de_lista(probador_t* probador){
     mostrar_estadisticas_locales(probador);
     printf("\n");
   }
-  printf("Fin de las pruebas de la lista\n");
+  printf("Fin de las pruebas de la lista\n\n");
+}
+
+void pruebas_de_pila(probador_t* probador){
+  /*
+  int a = 0;
+  int b = 1;
+  int c = 2;
+  */
+
+
+
+  printf("Fin de las pruebas de pila\n\n");
 }
 
 int main(){
   probador_t* probador = crear_probador();
 
   pruebas_de_lista(probador);
-  /*
   pruebas_de_pila(probador);
+  /*
   pruebas_de_cola(probador);
   pruebas_de_iterador(probador);
   */
