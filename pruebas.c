@@ -202,7 +202,7 @@ void pruebas_de_lista_tope(probador_t* probador){
   lista_t* pila = lista_crear();
   asegurar_probador(probador,"Se pasa una pila nula", lista_tope(NULL) == NULL);
   asegurar_probador(probador,"Se pasas una pila vacia", lista_tope(pila) == NULL);
-  lista_apilar(pilar,&a);
+  lista_apilar(pila,&a);
   asegurar_probador(probador,"Se pide el elemento tope de una pila con unico elemento", lista_tope(pila) == &a);
   // Caja blanca   asegurar_probador(probador,"Se pide el elemento tope de una pila con unico elemento", lista_tope(pila) == lista->ultimo->elemento && lista->ultimo->elemento == &a);
   lista_apilar(pila,&b);
@@ -222,7 +222,7 @@ void pruebas_de_pila(probador_t* probador){
 void pruebas_encolar(probador_t* probador){
   int a = 0;
   int b = 1;
-  int c = 2;
+  //int c = 2;
   printf("Pruebas de lista_encolar\n");
   lista_t* cola = lista_crear();
   asegurar_probador(probador,"Se pasa una cola nula", lista_encolar(NULL,&a) == FALLO);
@@ -233,9 +233,27 @@ void pruebas_encolar(probador_t* probador){
   mostrar_estadisticas_locales(probador);
 }
 
+void pruebas_desencolar(probador_t* probador){
+  printf("Pruebas de lista_desencolar\n");
+  int a = 0;
+  int b = 1;
+  int c = 2;
+  lista_t* cola = lista_crear();
+  asegurar_probador(probador,"Se pasa una cola", lista_desencolar(NULL) == FALLO);
+  asegurar_probador(probador,"Se pasa una cola vacia", lista_desencolar(cola) == FALLO);
+  lista_encolar(cola,&a);
+  asegurar_probador(probador,"Se pasa una cola con unico y despues queda vacia", lista_desencolar(cola) == EXITO && lista_vacia(cola));
+  lista_encolar(cola,&a);
+  lista_encolar(cola,&b);
+  lista_encolar(cola,&c);
+  asegurar_probador(probador,"Se pasa una cola con multiples elementos y desencola bien", lista_desencolar(cola) == EXITO && !lista_vacia(cola) && lista_primero(cola) == &b);
+  lista_destruir(cola);
+  mostrar_estadisticas_locales(probador);
+}
+
 void pruebas_de_cola(probador_t* probador){
   pruebas_encolar(probador);
-//  pruebas_desencolar(probador);
+  pruebas_desencolar(probador);
 //  pruebas_lista_primero(probador);
 }
 
