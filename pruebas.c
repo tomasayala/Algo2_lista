@@ -110,7 +110,34 @@ void pruebas_de_lista(probador_t* probador){
     mostrar_estadisticas_locales(probador);
     printf("\n");
   }
+  //Pruebas de lista_ultimo
+  {
+    printf("Pruebas de lista_ultimo\n");
+    lista_t* lista = lista_crear();
+    asegurar_probador(probador,"Se pasa una lista nula", lista_ultimo(NULL) == NULL);
+    asegurar_probador(probador,"Se pasa una lista vacia", lista_ultimo(lista) == NULL);
+    lista_insertar(lista,&a);
+    asegurar_probador(probador,"Se pasa una lista con unico elemento y devuelve ese elemento", lista_ultimo(lista) == &a);
+    lista_insertar(lista,&b);
+    asegurar_probador(probador,"Se pasa una lista con mas de un elemento y devuelve el ultimo", lista_ultimo(lista) == &b);
+    lista_destruir(lista);
+    mostrar_estadisticas_locales(probador);
+    printf("\n");
+  }
   //Pruebas de lista_elementos
+  {
+    printf("Pruebas de lista_elementos\n");
+    lista_t* lista = lista_crear();
+    asegurar_probador(probador,"Se pasa una lista nula y devuelve 0", lista_elementos(NULL) == 0 );
+    asegurar_probador(probador,"Se pasa una lista vacia y devuelve 0", lista_elementos(lista) == 0);
+    lista_insertar(lista,&a);
+    lista_insertar(lista,&b);
+    asegurar_probador(probador,"Se pasa una lista con dos elementos y devuelve el numero correcto", lista_elementos(lista) == lista->cantidad_elementos);
+    lista_destruir(lista);
+    mostrar_estadisticas_locales(probador);
+    printf("\n");
+  }
+  printf("Fin de las pruebas de la lista\n");
 }
 
 int main(){
