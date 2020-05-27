@@ -152,7 +152,7 @@ int lista_borrar_de_posicion(lista_t* lista, size_t posicion){
     lista = borrar_primera_posicion(lista);
     return TODO_OK;
   }
-  nodo_t* aux =  buscar_nodo_en_posicion(lista, lista->primero, posicion --);
+  nodo_t* aux =  buscar_nodo_en_posicion(lista, lista->primero, posicion -1);
   nodo_t* a_eliminar = aux->siguiente;
   aux->siguiente = a_eliminar->siguiente;
   liberar_nodo(a_eliminar);
