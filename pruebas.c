@@ -163,6 +163,7 @@ void pruebas_de_lista(probador_t* probador){
 }
 
 void pruebas_de_apilar(probador_t* probador){
+  printf("Pruebas de lista apilar\n");
   int a = 0;
   int b = 1;
   lista_t* pila = lista_crear();
@@ -171,11 +172,12 @@ void pruebas_de_apilar(probador_t* probador){
   asegurar_probador(probador,"Se inserta el primer elemento en la pila", lista_apilar(pila,&a) == EXITO && lista_ultimo(pila) == lista_primero(pila) && lista_ultimo(pila) == &a);
   // Caja blanca  asegurar_probador(probador,"Se inserta el primer elemento en la pila", lista_apilar(pila,&a) == EXITO && lista->primero->elemento == lista->ultimo->elemento);
   asegurar_probador(probador,"Se otro elemento en la pila correctamente al final", lista_apilar(pila,&b) == EXITO && lista_ultimo(pila) == &b);
-  lista_destruir(lista);
+  lista_destruir(pila);
   mostrar_estadisticas_locales(probador);
 }
 
 void pruebas_de_desapilar(probador_t* probador){
+  printf("Pruebas de lista desapilar\n");
   int a = 0;
   int b = 1;
   int c = 2;
@@ -188,7 +190,25 @@ void pruebas_de_desapilar(probador_t* probador){
   lista_apilar(pila,&c);
   asegurar_probador(probador,"Se intenta desapilar una pila con mas de un elemento", lista_desapilar(pila) == EXITO && lista_elementos(pila) == 1);
   // Caja blanca asegurar_probador(probador,"Se intenta desapilar una pila con mas de un elemento", lista_desapilar(pila) == EXITO && lista->cantidad_elementos == 1 && lista->primero == lista->ultimo );
-  lista_destruir(lista);
+  lista_destruir(pila);
+  mostrar_estadisticas_locales(probador);
+}
+
+void pruebas_de_lista_tope(probador_t* probador){
+  printf("Pruebas de lista_tope\n");
+  int a = 0;
+  int b = 1;
+  int c = 2;
+  lista_t* pila = lista_crear();
+  asegurar_probador(probador,"Se pasa una pila nula", lista_tope(NULL) == NULL);
+  asegurar_probador(probador,"Se pasas una pila vacia", lista_tope(pila) == NULL);
+  lista_apilar(pilar,&a);
+  asegurar_probador(probador,"Se pide el elemento tope de una pila con unico elemento", lista_tope(pila) == &a);
+  // Caja blanca   asegurar_probador(probador,"Se pide el elemento tope de una pila con unico elemento", lista_tope(pila) == lista->ultimo->elemento && lista->ultimo->elemento == &a);
+  lista_apilar(pila,&b);
+  lista_apilar(pila,&c);
+  asegurar_probador(probador,"Se pide el elemento tope de una pila de varios elementos", lista_tope(pila) == &c);
+  lista_destruir(pila);
   mostrar_estadisticas_locales(probador);
 }
 
@@ -210,7 +230,9 @@ void pruebas_de_pila(probador_t* probador){
 int main(){
   probador_t* probador = crear_probador();
 
+  printf("\t\t\t Pruebas de lista\n");
   pruebas_de_lista(probador);
+  printf("\t\t\t Pruebas de pila\n");
   pruebas_de_pila(probador);
   /*
   pruebas_de_cola(probador);
