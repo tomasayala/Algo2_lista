@@ -1,9 +1,11 @@
 #include <stdlib.h>
 #include "lista.h"
 
-#define ERROR -1
-#define TODO_OK 0
-
+const int ERROR = -1;
+const int TODO_OK = 0;
+const size_t PRIMERA_POSICION = 0;
+const size_t LISTA_VACIA = 0;
+const size_t UNICO_ELEMENTO = 1;
 
 typedef struct nodo{
   void* elemento;
@@ -42,7 +44,7 @@ lista_t* vaciar_lista(lista_t* lista){
   liberar_nodo(lista->primero);
   lista->primero = NULL;
   lista->ultimo = NULL;
-  lista->cantidad_elementos = 0;
+  lista->cantidad_elementos = LISTA_VACIA;
   return lista;
 }
 
@@ -65,7 +67,7 @@ lista_t* lista_crear(){
 bool lista_vacia ( lista_t* lista){
   if(!lista)
     return true;
-  return lista->cantidad_elementos == 0;
+  return lista->cantidad_elementos == LISTA_VACIA;
 }
 
 /*
@@ -90,7 +92,7 @@ nodo_t* crear_nodo(void* elemento){
 
 nodo_t* buscar_nodo_en_posicion(lista_t* lista, nodo_t* primer_nodo, size_t posicion_deseada){
   nodo_t* deseado = primer_nodo;
-  size_t posicion_actual = 0;
+  size_t posicion_actual = PRIMERA_POSICION;
   while (posicion_actual != posicion_deseada) {
     deseado = deseado->siguiente;
     posicion_actual++;
@@ -172,7 +174,7 @@ int lista_insertar_en_posicion ( lista_t* lista, void* elemento, size_t posicion
   nodo_t* nuevo = crear_nodo(elemento);
   if(!nuevo)
     return ERROR;
-  if(posicion == 0){
+  if(posicion == PRIMERA_POSICION){
     lista = insertar_primera_posicion(lista,nuevo);
     return TODO_OK;
   }
@@ -207,7 +209,7 @@ lista_t* desapilar (lista_t* lista){
 int lista_borrar(lista_t* lista){
   if(!lista || lista_vacia(lista))
     return ERROR;
-  if(lista->cantidad_elementos == 1){
+  if(lista->cantidad_elementos == UNICO_ELEMENTO){
     lista = vaciar_lista(lista);
     return TODO_OK;
   }
@@ -316,7 +318,7 @@ size_t lista_elementos (lista_t* lista){
 */
 
 int lista_apilar(lista_t* lista, void* elemento){
-  if(!lista || !elemento)
+  if(!lista)
     return ERROR;
   nodo_t* nuevo = crear_nodo(elemento);
   if(!nuevo)
@@ -338,7 +340,7 @@ int lista_apilar(lista_t* lista, void* elemento){
 int lista_desapilar(lista_t* lista){
   if(!lista || lista_vacia(lista))
     return ERROR;
-  if(lista->cantidad_elementos == 1){
+  if(lista->cantidad_elementos == UNICO_ELEMENTO){
     lista = vaciar_lista(lista);
     return TODO_OK;
   }
@@ -378,7 +380,7 @@ lista_t* encolar(lista_t* lista, nodo_t* nuevo){
 */
 
 int lista_encolar (lista_t* lista, void* elemento){
-  if(!lista || !elemento)
+  if(!lista)
     return ERROR;
   nodo_t* nuevo = crear_nodo(elemento);
   if(!nuevo)
@@ -414,7 +416,7 @@ lista_t* desencolar(lista_t* lista){
 int lista_desencolar(lista_t* lista){
   if(!lista || lista_vacia(lista))
     return ERROR;
-  if(lista->cantidad_elementos == 1){
+  if(lista->cantidad_elementos == UNICO_ELEMENTO){
     lista = vaciar_lista(lista);
     return TODO_OK;
   }
