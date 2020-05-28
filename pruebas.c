@@ -7,6 +7,13 @@
 const int EXITO = 0;
 const int FALLO = -1;
 
+/*
+* Precondiciones: El probador debe ser creado con crear_probador
+* Postcondiciones: Muestra mensajes por pantallas diciendo si se pasaron las pruebas
+                  de lista_crear y lista_destruir y lista_vacia. Tambien avisa cuando se
+                  ejecta funciones con parametros que pueden generar segmentation fault
+*/
+
 void prueba_lista_crear(probador_t* probador){
   printf("Pruebas de lista crear y lista vacia y lista_destruir\n");
   avisar_probador(probador, "Se crea una lista");
@@ -17,6 +24,14 @@ void prueba_lista_crear(probador_t* probador){
   lista_destruir(lista);
   mostrar_estadisticas_locales(probador);
 }
+
+/*
+* Precondiciones: El probador debe ser creado con crear_probador
+* Postcondiciones: Muestra mensajes por pantallas diciendo si se pasaron las pruebas de
+                   de lista_insertar, lista_borrar y lista_vacia. Tambien avisa cuando se
+                   ejecuta funciones con parametros que pueden generar la terminacion temprana
+                   del programa por segmentation fault o violacion de segmento.
+*/
 
 void prueba_lista_insertar(probador_t* probador){
   char a = 'a';
@@ -32,6 +47,12 @@ void prueba_lista_insertar(probador_t* probador){
   lista_destruir(lista);
   mostrar_estadisticas_locales(probador);
 }
+
+/*
+* Precondiciones: El probador debe ser creado con crear_probador
+* Postcondiciones: Muestra mensajes por pantallas diciendo si se pasaron las pruebas de
+                   lista_insertar_en_posicion.
+*/
 
 void prueba_lista_insertar_en_posicion(probador_t* probador){
   char a = 'a';
@@ -50,6 +71,11 @@ void prueba_lista_insertar_en_posicion(probador_t* probador){
   mostrar_estadisticas_locales(probador);
 }
 
+/*
+* Precondiciones: El probador debe ser creado con crear_probador
+* Postcondiciones: Muestra mensajes por pantallas diciendo si se pasaron las pruebas de lista_borrar
+*/
+
 void prueba_lista_borrar(probador_t* probador){
   char a = 'a';
   char b = 'b';
@@ -65,6 +91,12 @@ void prueba_lista_borrar(probador_t* probador){
   lista_destruir(lista);
   mostrar_estadisticas_locales(probador);
 }
+
+/*
+* Precondiciones: El probador debe ser creado con crear_probador
+* Postcondiciones: Muestra mensajes por pantallas diciendo si se pasaron las pruebas de
+                   prueba_lista_borrar_en_posicion
+*/
 
 void prueba_lista_borrar_en_posicion(probador_t* probador){
   char a = 'a';
@@ -89,6 +121,12 @@ void prueba_lista_borrar_en_posicion(probador_t* probador){
   mostrar_estadisticas_locales(probador);
 }
 
+/*
+* Precondiciones: El probador debe ser creado con crear_probador
+* Postcondiciones: Muestra mensajes por pantallas diciendo si se pasaron las pruebas de
+                   lista_elemento_en_posicion
+*/
+
 void prueba_lista_elemento_en_posicion(probador_t* probador){
   char a = 'a';
   char b = 'b';
@@ -112,6 +150,12 @@ void prueba_lista_elemento_en_posicion(probador_t* probador){
   mostrar_estadisticas_locales(probador);
 }
 
+/*
+* Precondiciones: El probador debe ser creado con crear_probador
+* Postcondiciones: Muestra mensajes por pantallas diciendo si se pasaron las pruebas de
+                   lista_ultimo
+*/
+
 void prueba_lista_ultimo(probador_t* probador){
   char a = 'a';
   char b = 'b';
@@ -127,6 +171,11 @@ void prueba_lista_ultimo(probador_t* probador){
   mostrar_estadisticas_locales(probador);
 }
 
+/*
+* Precondiciones: El probador debe ser creado con crear_probador
+* Postcondiciones: Muestra mensajes por pantallas diciendo si se pasaron las pruebas de lista_elementos
+*/
+
 void prueba_lista_elementos(probador_t* probador){
   char a = 'a';
   char b = 'b';
@@ -141,10 +190,21 @@ void prueba_lista_elementos(probador_t* probador){
   mostrar_estadisticas_locales(probador);
 }
 
+/*
+* Precondiciones: El puntero contador debe ser distinto de NULL
+* Postcondiciones: Muestra por pantalla los elementos de la lista en orden
+*/
+
 void mostrar_elemento(void* elemento, void* contador){
   if(elemento && contador)
     printf("Elemento %i: %c \n", (*(int*)contador)++, *(char*)elemento);
 }
+
+/*
+* Precondiciones: El probador debe ser creado con crear_probador
+* Postcondiciones: Muestra mensajes por pantallas avisando y que se espera ver cuando se ejecuta las pruebas de
+                   lista_con_cada_elemento
+*/
 
 void prueba_lista_con_cada_elemento(probador_t* probador){
   void (*funcion)(void*,void*) = mostrar_elemento;
@@ -171,8 +231,13 @@ void prueba_lista_con_cada_elemento(probador_t* probador){
   avisar_probador(probador,"Se pasa una lista no vacia, tienen que imprimir los elementos a b c d");
   lista_con_cada_elemento(lista,funcion,(void*)&contador);
   lista_destruir(lista);
-  lista_destruir(lista_vacia);
 }
+lista_destruir(lista_vacia);
+
+/*
+* Precondiciones: El probador debe ser creado con crear_probador
+* Postcondiciones: Ejecuta todas y muestra por pantalla todas las pruebas para la lista que se pasaron o fallaron
+*/
 
 void pruebas_de_lista(probador_t* probador){
   prueba_lista_crear(probador);
@@ -185,6 +250,11 @@ void pruebas_de_lista(probador_t* probador){
   prueba_lista_con_cada_elemento(probador);
   printf("Fin de las pruebas de la lista\n\n");
 }
+
+/*
+* Precondiciones: El probador debe ser creado con crear_probador
+* Postcondiciones: Muestra mensajes por pantallas diciendo si se pasaron las pruebas de lista_apilar
+*/
 
 void pruebas_de_apilar(probador_t* probador){
   printf("Pruebas de lista apilar\n");
@@ -199,6 +269,11 @@ void pruebas_de_apilar(probador_t* probador){
   lista_destruir(pila);
   mostrar_estadisticas_locales(probador);
 }
+
+/*
+* Precondiciones: El probador debe ser creado con crear_probador
+* Postcondiciones: Muestra mensajes por pantallas diciendo si se pasaron las pruebas de lista_desapilar
+*/
 
 void pruebas_de_desapilar(probador_t* probador){
   printf("Pruebas de lista desapilar\n");
@@ -218,6 +293,11 @@ void pruebas_de_desapilar(probador_t* probador){
   mostrar_estadisticas_locales(probador);
 }
 
+/*
+* Precondiciones: El probador debe ser creado con crear_probador
+* Postcondiciones: Muestra mensajes por pantallas diciendo si se pasaron las pruebas de lista_tope
+*/
+
 void pruebas_de_lista_tope(probador_t* probador){
   printf("Pruebas de lista_tope\n");
   int a = 0;
@@ -236,12 +316,22 @@ void pruebas_de_lista_tope(probador_t* probador){
   mostrar_estadisticas_locales(probador);
 }
 
+/*
+* Precondiciones: El probador debe ser creado con crear_probador
+* Postcondiciones: Ejecuta todas y muestra por pantalla todas las pruebas para la lista que se pasaron o fallaron
+*/
+
 void pruebas_de_pila(probador_t* probador){
   pruebas_de_apilar(probador);
   pruebas_de_desapilar(probador);
   pruebas_de_lista_tope(probador);
   printf("Fin de las pruebas de pila\n\n");
 }
+
+/*
+* Precondiciones: El probador debe ser creado con crear_probador
+* Postcondiciones: Muestra mensajes por pantallas diciendo si se pasaron las pruebas de lista_encolar
+*/
 
 void pruebas_encolar(probador_t* probador){
   int a = 0;
@@ -257,6 +347,11 @@ void pruebas_encolar(probador_t* probador){
   lista_destruir(cola);
   mostrar_estadisticas_locales(probador);
 }
+
+/*
+* Precondiciones: El probador debe ser creado con crear_probador
+* Postcondiciones: Muestra mensajes por pantallas diciendo si se pasaron las pruebas de lista_desencolar
+*/
 
 void pruebas_desencolar(probador_t* probador){
   printf("Pruebas de lista_desencolar\n");
@@ -276,6 +371,11 @@ void pruebas_desencolar(probador_t* probador){
   mostrar_estadisticas_locales(probador);
 }
 
+/*
+* Precondiciones: El probador debe ser creado con crear_probador
+* Postcondiciones: Muestra mensajes por pantallas diciendo si se pasaron las pruebas de lista_primero
+*/
+
 void pruebas_lista_primero(probador_t* probador){
   printf("Pruebas de lista_primero\n");
   int a = 0;
@@ -294,11 +394,22 @@ void pruebas_lista_primero(probador_t* probador){
   mostrar_estadisticas_locales(probador);
 }
 
+/*
+* Precondiciones: El probador debe ser creado con crear_probador
+* Postcondiciones: Ejecuta y muestra por pantalla todas las pruebas de la cola
+*/
+
 void pruebas_de_cola(probador_t* probador){
   pruebas_encolar(probador);
   pruebas_desencolar(probador);
   pruebas_lista_primero(probador);
 }
+
+/*
+* Precondiciones: El probador debe ser creado con crear_probador
+* Postcondiciones: Muestra mensajes por pantallas diciendo si se pasaron las pruebas de
+                   lista_iterador_crear
+*/
 
 void pruebas_iterador_crear(probador_t* probador){
   printf("Pruebas de lista_iterador_crear\n");
@@ -313,6 +424,12 @@ void pruebas_iterador_crear(probador_t* probador){
   lista_destruir(lista);
   mostrar_estadisticas_locales(probador);
 }
+
+/*
+* Precondiciones: El probador debe ser creado con crear_probador
+* Postcondiciones: Muestra mensajes por pantallas diciendo si se pasaron las pruebas de
+                   lista_iterador_tiene_siguiente
+*/
 
 void pruebas_iterador_tiene_siguiente(probador_t* probador){
   printf("Pruebas de lista_iterador_tiene_siguiente\n");
@@ -329,6 +446,12 @@ void pruebas_iterador_tiene_siguiente(probador_t* probador){
   lista_destruir(lista);
   mostrar_estadisticas_locales(probador);
 }
+
+/*
+* Precondiciones: El probador debe ser creado con crear_probador
+* Postcondiciones: Muestra mensajes por pantallas diciendo si se pasaron las pruebas de
+                    lista_iterador_siguiente
+*/
 
 void pruebas_iterador_siguiente(probador_t* probador){
   printf("Pruebas de lista_iterador_siguiente\n");
@@ -353,6 +476,11 @@ void pruebas_iterador_siguiente(probador_t* probador){
   mostrar_estadisticas_locales(probador);
 }
 
+/*
+* Precondiciones: El probador debe ser creado con crear_probador
+* Postcondiciones: Ejecuta y muestra el resultado de todas las pruebas para el iterador de la lista
+*/
+
 void pruebas_de_iterador(probador_t* probador){
   pruebas_iterador_crear(probador);
   pruebas_iterador_tiene_siguiente(probador);
@@ -361,6 +489,10 @@ void pruebas_de_iterador(probador_t* probador){
 
 int main(){
   probador_t* probador = crear_probador();
+  if(!probador){
+    perror("No hay memoria suficiente para crear las pruebas");
+    return -1;
+  }
 
   printf("\t\t\t Pruebas de lista\n");
   pruebas_de_lista(probador);
