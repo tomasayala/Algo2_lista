@@ -19,6 +19,8 @@ void prueba_lista_crear(probador_t* probador){
 }
 
 void prueba_lista_insertar(probador_t* probador){
+  char a = 'a';
+  char b = 'b';
   printf("Pruebas de lista insertar y ultima prueba de lista_vacia y de lista_destruir\n");
   lista_t* lista = lista_crear();
   asegurar_probador(probador,"Se pasa una lista nula y elemento valido",lista_insertar(NULL,&a) == FALLO);
@@ -32,6 +34,10 @@ void prueba_lista_insertar(probador_t* probador){
 }
 
 void prueba_lista_insertar_en_posicion(probador_t* probador){
+  char a = 'a';
+  char b = 'b';
+  char c = 'c';
+  char d = 'd';
   printf("Pruebas de lista_insertar_en_posicion\n");
   lista_t* lista = lista_crear();
   asegurar_probador(probador,"Se pasa una lista nula y un elemento valido", lista_insertar_en_posicion(NULL,&a,1) == FALLO);
@@ -45,6 +51,8 @@ void prueba_lista_insertar_en_posicion(probador_t* probador){
 }
 
 void prueba_lista_borrar(probador_t* probador){
+  char a = 'a';
+  char b = 'b';
   printf("Pruebas de lista_borrar\n");
   lista_t* lista = lista_crear();
   asegurar_probador(probador, "Se pasa una lista nula", lista_borrar(NULL)==FALLO);
@@ -58,7 +66,12 @@ void prueba_lista_borrar(probador_t* probador){
   mostrar_estadisticas_locales(probador);
 }
 
-void prueba_lista_insertar_en_posicion(probador_t* probador){
+void prueba_lista_borrar_en_posicion(probador_t* probador){
+  char a = 'a';
+  char b = 'b';
+  char c = 'c';
+  char d = 'd';
+  char z = 'z';
   printf("Pruebas de lista_borrar_de_posicion\n");
   lista_t* lista = lista_crear();
   asegurar_probador(probador, "Se pasa una lista nula", lista_borrar_de_posicion(NULL,0) == FALLO);
@@ -77,6 +90,11 @@ void prueba_lista_insertar_en_posicion(probador_t* probador){
 }
 
 void prueba_lista_elemento_en_posicion(probador_t* probador){
+  char a = 'a';
+  char b = 'b';
+  char c = 'c';
+  char d = 'd';
+  char z = 'z';
   printf("Pruebas de lista_elemento_en_posicion\n");
   lista_t* lista = lista_crear();
   asegurar_probador(probador,"Se pasa una lista nula", lista_elemento_en_posicion(NULL,0) == NULL);
@@ -95,6 +113,8 @@ void prueba_lista_elemento_en_posicion(probador_t* probador){
 }
 
 void prueba_lista_ultimo(probador_t* probador){
+  char a = 'a';
+  char b = 'b';
   printf("Pruebas de lista_ultimo\n");
   lista_t* lista = lista_crear();
   asegurar_probador(probador,"Se pasa una lista nula", lista_ultimo(NULL) == NULL);
@@ -108,6 +128,8 @@ void prueba_lista_ultimo(probador_t* probador){
 }
 
 void prueba_lista_elementos(probador_t* probador){
+  char a = 'a';
+  char b = 'b';
   printf("Pruebas de lista_elementos\n");
   lista_t* lista = lista_crear();
   asegurar_probador(probador,"Se pasa una lista nula y devuelve 0", lista_elementos(NULL) == 0 );
@@ -153,11 +175,6 @@ void prueba_lista_con_cada_elemento(probador_t* probador){
 }
 
 void pruebas_de_lista(probador_t* probador){
-  char a = 'a';
-  char b = 'b';
-  char c = 'c';
-  char d = 'd';
-  char z = 'z';
   prueba_lista_crear(probador);
   prueba_lista_insertar(probador);
   prueba_lista_insertar_en_posicion(probador);
@@ -235,7 +252,7 @@ void pruebas_encolar(probador_t* probador){
   asegurar_probador(probador,"Se pasa una cola nula", lista_encolar(NULL,&a) == FALLO);
   asegurar_probador(probador,"Inserta correctamente el primer elemento de una cola vacia", lista_encolar(cola,&a) == EXITO && lista_primero(cola) == &a && lista_ultimo(cola) == &a);
   asegurar_probador(probador,"Se inserta correctamente un elemento en una cola no vacia", lista_encolar(cola,&b) == EXITO && lista_ultimo(cola) == &b);
-  asegurar_probador(probador,"Se pasa un elemento nulo", lista_encolar(cola,NULL) == EXITO);
+  //asegurar_probador(probador,"Se pasa un elemento nulo", lista_encolar(cola,NULL) == EXITO);
   avisar_probador(probador,"Se destruye la cola");
   lista_destruir(cola);
   mostrar_estadisticas_locales(probador);
