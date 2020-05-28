@@ -287,7 +287,7 @@ bool lista_iterador_tiene_siguiente (lista_iterador_t* iterador){
 }
 
 void* lista_iterador_siguiente(lista_iterador_t* iterador){
-  if(!iterador || lista_iterador_tiene_siguiente(iterador))
+  if(!iterador || !lista_iterador_tiene_siguiente(iterador))
     return NULL;
   void* elemento_actual = iterador->indice->elemento;
   iterador->indice = iterador->indice->siguiente;
