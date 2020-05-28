@@ -2,6 +2,27 @@
 #include "lista.h"
 //Operaciones generales
 
+#define ERROR -1
+#define TODO_OK 0
+
+
+typedef struct nodo{
+  void* elemento;
+  struct nodo* siguiente;
+}nodo_t;
+
+struct lista{
+    nodo_t* primero;
+    nodo_t* ultimo;
+    size_t cantidad_elementos;
+};
+
+struct lista_iterador{
+    lista_t* lista;
+    nodo_t* indice;
+};
+
+
 void liberar_nodo (nodo_t* nodo){
   free(nodo);
   nodo = NULL;

@@ -4,24 +4,12 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-#define ERROR -1
-#define TODO_OK 0
 
-typedef struct nodo{
-  void* elemento;
-  struct nodo* siguiente;
-}nodo_t;
 
-typedef struct lista{
-    nodo_t* primero;
-    nodo_t* ultimo;
-    size_t cantidad_elementos;
-}lista_t;
 
-typedef struct lista_iterador{
-    lista_t* lista;
-    nodo_t* indice;
-}lista_iterador_t;
+typedef struct lista lista_t;
+
+typedef struct lista_iterador lista_iterador_t;
 
 /*
  * Crea la lista reservando la memoria necesaria.
