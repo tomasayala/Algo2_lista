@@ -275,6 +275,42 @@ void pruebas_de_cola(probador_t* probador){
   pruebas_lista_primero(probador);
 }
 
+void pruebas_iterador_crear(probador_t* probador){
+  printf("Pruebas de lista_iterador_crear\n");
+  lista_t* lista = lista_crear();
+  asegurar_probador(probador,"Se pasa una lista nula y espera que devuelva NULL", lista_iterador_crear(NULL) == NULL);
+  lista_iterador_t* it = lista_iterador_crear(lista);
+  asegurar_probador(probador, "Se pasa una lista vacia y devuelve un puntero al iterador" it != NULL && lista_vacia(it->lista));
+  avisar_probador(probador,"Se intenta destruir un itereador nulo");
+  lista_iterador_destruir(NULL);
+  avisar_probador(probador,"Se destruye un iterador de la lista");
+  lista_iterador_destruir(it);
+  lista_destruir(lista);
+  mostrar_estadisticas_locales(probador);
+}
+
+void pruebas_iterador_tiene_siguiente(probador_t* probador){
+  printf("Pruebas de lista_iterador_tiene_siguiente\n");
+  int a = 0;
+  lista_t* lista = lista_crear();
+  lista_iterador_t* it = lista_iterador_crear(lista);
+  asegurar_probador(probador,"Se pasa un iterador NULL y devuelve false", lista_iterador_tiene_siguiente(NULL) == false);
+  asegurar_probador(probador,"Se pasa una iterador a una lista vacia y devuelve false", lista_iterador_tiene_siguiente(it) == false);
+  lista_iterador_destruir(it);
+  lista_insertar(lista,&a);
+  it = lista_iterador_crear(lista);
+  asegurar_probador(probador,"Se pasa ")
+
+  lista_destruir(lista);
+  mostrar_estadisticas_locales(probador);
+}
+
+void pruebas_de_iterador(probador_t* probador){
+  pruebas_iterador_crear(probador);
+  pruebas_iterador_tiene_siguiente(probador);
+  pruebas_iterador_siguiente(probador);
+}
+
 int main(){
   probador_t* probador = crear_probador();
 
@@ -284,10 +320,9 @@ int main(){
   pruebas_de_pila(probador);
   printf("\t\t\t Pruebas de cola\n");
   pruebas_de_cola(probador);
-
-  /*
+  printf("\t\t\t Pruebas de iteradores externos\n");
   pruebas_de_iterador(probador);
-  */
+
   mostrar_estadisticas_totales(probador);
 
   destruir_probador(probador);
