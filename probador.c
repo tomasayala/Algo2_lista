@@ -20,8 +20,6 @@ probador_t* crear_probador(){
 void avisar_probador(probador_t* probador, char* aviso){
   if(!probador || !aviso)
     return;
-  probador->pruebas_exitosas++;
-  probador->pruebas_totales++;
   printf( COLOR_AMARILLO "AVISO: %s" COLOR_NORMAL "\n", aviso);
 }
 
