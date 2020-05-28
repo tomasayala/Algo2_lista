@@ -280,7 +280,7 @@ void pruebas_iterador_crear(probador_t* probador){
   lista_t* lista = lista_crear();
   asegurar_probador(probador,"Se pasa una lista nula y espera que devuelva NULL", lista_iterador_crear(NULL) == NULL);
   lista_iterador_t* it = lista_iterador_crear(lista);
-  asegurar_probador(probador, "Se pasa una lista vacia y devuelve un puntero al iterador" it != NULL && lista_vacia(it->lista));
+  asegurar_probador(probador, "Se pasa una lista vacia y devuelve un puntero al iterador", it != NULL && lista_vacia(it->lista));
   avisar_probador(probador,"Se intenta destruir un itereador nulo");
   lista_iterador_destruir(NULL);
   avisar_probador(probador,"Se destruye un iterador de la lista");
@@ -299,8 +299,31 @@ void pruebas_iterador_tiene_siguiente(probador_t* probador){
   lista_iterador_destruir(it);
   lista_insertar(lista,&a);
   it = lista_iterador_crear(lista);
-  asegurar_probador(probador,"Se pasa ")
+  asegurar_probador(probador,"Se pasa iterador que apunta a una lista no vacia en la primera posicion", lista_iterador_tiene_siguiente(it) == true);
+  lista_iterador_destruir(it);
+  lista_destruir(lista);
+  mostrar_estadisticas_locales(probador);
+}
 
+void pruebas_iterador_siguiente(probador_t* probador){
+  printf("Pruebas de lista_iterador_siguiente\n");
+  int a = 0;
+  int b = 1;
+  int c = 2;
+  lista_t* lista = lista_crear();
+  lista_iterador_t* it = lista_iterador_crear(lista);
+  asegurar_probador(probador,"Se pasa un iterador nulo y devuelve NULL", lista_iterador_siguiente(NULL) == NULL);
+  asegurar_probador(probador,"Se pasa un iterador que apunta a una lista vacia", lista_iterador_siguiente(it) == NULL);
+  lista_iterador_destruir(it);
+  lista_insertar(lista,&a);
+  lista_insertar(lista,&b);
+  lista_insertar(lista,&c);
+  it = lista_iterador_crear(lista);
+  asegurar_probador(probador,"Se itera ahora lista con tres elementos y se pide el primero", lista_iterador_siguiente(it) == &a);
+  asegurar_probador(probador,"Se pide el siguiente elemento", lista_iterador_siguiente(it) == &b);
+  asegurar_probador(probador,"Se pide el ultimo elemento", lista_iterador_siguiente(it) == &c);
+  asegurar_probador(probador,"Se pide un nuevo siguiente y devuelve NULL porque ya no posee mas elementos la lista", lista_iterador_siguiente(it) == NULL);
+  lista_iterador_destruir(it);
   lista_destruir(lista);
   mostrar_estadisticas_locales(probador);
 }
