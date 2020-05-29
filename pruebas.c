@@ -213,7 +213,7 @@ void prueba_lista_con_cada_elemento(probador_t* probador){
   char b = 'b';
   char c = 'c';
   char d = 'd';
-  printf("Pruebas de lista_con_cada_elemento\n");
+  printf("Pruebas de lista_con_cada_elemento y de iterador interno\n");
   lista_t* lista = lista_crear();
   lista_insertar(lista,&a);
   lista_t* lista_vacia = lista_crear();
@@ -231,8 +231,8 @@ void prueba_lista_con_cada_elemento(probador_t* probador){
   avisar_probador(probador,"Se pasa una lista no vacia, tienen que imprimir los elementos a b c d");
   lista_con_cada_elemento(lista,funcion,(void*)&contador);
   lista_destruir(lista);
+  lista_destruir(lista_vacia);
 }
-lista_destruir(lista_vacia);
 
 /*
 * Precondiciones: El probador debe ser creado con crear_probador
@@ -339,7 +339,7 @@ void pruebas_encolar(probador_t* probador){
   asegurar_probador(probador,"Se pasa una cola nula", lista_encolar(NULL,&a) == FALLO);
   asegurar_probador(probador,"Inserta correctamente el primer elemento de una cola vacia", lista_encolar(cola,&a) == EXITO && lista_primero(cola) == &a && lista_ultimo(cola) == &a);
   asegurar_probador(probador,"Se inserta correctamente un elemento en una cola no vacia", lista_encolar(cola,&b) == EXITO && lista_ultimo(cola) == &b);
-  //asegurar_probador(probador,"Se pasa un elemento nulo", lista_encolar(cola,NULL) == EXITO);
+  asegurar_probador(probador,"Se pasa un elemento nulo", lista_encolar(cola,NULL) == EXITO);
   avisar_probador(probador,"Se destruye la cola");
   lista_destruir(cola);
   mostrar_estadisticas_locales(probador);
