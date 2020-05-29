@@ -39,9 +39,9 @@ void prueba_lista_insertar(probador_t* probador){
   printf("Pruebas de lista insertar y ultima prueba de lista_vacia y de lista_destruir\n");
   lista_t* lista = lista_crear();
   asegurar_probador(probador,"Se pasa una lista nula y elemento valido",lista_insertar(NULL,&a) == FALLO);
-  asegurar_probador(probador,"Se inserta el primer elemento en una lista vacia", lista_insertar(lista,&a) == EXITO);// && lista->primero == lista->ultimo && lista->primero->elemento == &a);
+  asegurar_probador(probador,"Se inserta el primer elemento en una lista vacia", lista_insertar(lista,&a) == EXITO);
   asegurar_probador(probador,"Se pasa una lista valida y un elemento nulo", lista_insertar(lista, NULL) == EXITO);
-  asegurar_probador(probador,"Se pasa a lista_insertar una lista con un elemento y lo inserta al final", lista_insertar(lista,&b) == EXITO);//) && lista->ultimo->elemento == &b);
+  asegurar_probador(probador,"Se pasa a lista_insertar una lista con un elemento y lo inserta al final", lista_insertar(lista,&b) == EXITO);
   asegurar_probador(probador,"Se pasa a lista_vacia una lista no vacia", lista_vacia(lista) == false);
   avisar_probador(probador,"Se destruye una lista no vacia");
   lista_destruir(lista);
@@ -62,10 +62,10 @@ void prueba_lista_insertar_en_posicion(probador_t* probador){
   printf("Pruebas de lista_insertar_en_posicion\n");
   lista_t* lista = lista_crear();
   asegurar_probador(probador,"Se pasa una lista nula y un elemento valido", lista_insertar_en_posicion(NULL,&a,1) == FALLO);
-  asegurar_probador(probador,"Se pasa el primer elemento a una lista vacia en la posicion 0", lista_insertar_en_posicion(lista,&a,0) == EXITO); //&& lista->primero == lista->ultimo);
-  asegurar_probador(probador,"Se pasa un elemento a una lista no vacia con una posicion mayor a la cantidad de elementos", lista_insertar_en_posicion(lista,&b,100) == EXITO); //&& lista->ultimo->elemento == &b);
-  asegurar_probador(probador,"Se pasa un elemento en la posicion 0 a una lista no vacia",lista_insertar_en_posicion(lista,&c,0) == EXITO); //&& lista->primero->elemento == &c);
-  asegurar_probador(probador,"Se pasa un elemento en la posicion 1 y lo inserta bien", lista_insertar_en_posicion(lista,&d,1) == EXITO && lista_elemento_en_posicion(lista,1) == &d); //&& lista->primero->siguiente->elemento == &d);
+  asegurar_probador(probador,"Se pasa el primer elemento a una lista vacia en la posicion 0", lista_insertar_en_posicion(lista,&a,0) == EXITO);
+  asegurar_probador(probador,"Se pasa un elemento a una lista no vacia con una posicion mayor a la cantidad de elementos", lista_insertar_en_posicion(lista,&b,100) == EXITO);
+  asegurar_probador(probador,"Se pasa un elemento en la posicion 0 a una lista no vacia",lista_insertar_en_posicion(lista,&c,0) == EXITO);
+  asegurar_probador(probador,"Se pasa un elemento en la posicion 1 y lo inserta bien", lista_insertar_en_posicion(lista,&d,1) == EXITO && lista_elemento_en_posicion(lista,1) == &d);
   asegurar_probador(probador,"Se pasa una lista valida y un elemento nulo", lista_insertar_en_posicion(lista,NULL,100) == EXITO);
   lista_destruir(lista);
   mostrar_estadisticas_locales(probador);
@@ -84,10 +84,10 @@ void prueba_lista_borrar(probador_t* probador){
   asegurar_probador(probador, "Se pasa una lista nula", lista_borrar(NULL)==FALLO);
   asegurar_probador(probador, "Se pasa una lista vacia a lista borrar", lista_borrar(lista) == FALLO);
   lista_insertar(lista,&a);
-  asegurar_probador(probador, "Se pasa una lista con un solo elemento", lista_borrar(lista) == EXITO && lista_vacia(lista)); //&& lista->primero == NULL && lista->ultimo == NULL);
+  asegurar_probador(probador, "Se pasa una lista con un solo elemento", lista_borrar(lista) == EXITO && lista_vacia(lista));
   lista_insertar(lista,&a);
   lista_insertar(lista,&b);
-  asegurar_probador(probador,"Se pasa una lista con mas de un elemento y lo borra bien", lista_borrar(lista) == EXITO); //&& lista->primero->siguiente == NULL);
+  asegurar_probador(probador,"Se pasa una lista con mas de un elemento y lo borra bien", lista_borrar(lista) == EXITO);
   lista_destruir(lista);
   mostrar_estadisticas_locales(probador);
 }
@@ -113,10 +113,10 @@ void prueba_lista_borrar_en_posicion(probador_t* probador){
   lista_insertar(lista,&c);
   lista_insertar(lista,&d);
   lista_insertar(lista,&z);
-  asegurar_probador(probador,"Se pasa una posicion de 100 a una lista con 5 elementos", lista_borrar_de_posicion(lista,100) == EXITO); //&& lista->ultimo->elemento == &d);
+  asegurar_probador(probador,"Se pasa una posicion de 100 a una lista con 5 elementos", lista_borrar_de_posicion(lista,100) == EXITO);
   lista_insertar(lista,&z);
-  asegurar_probador(probador,"Se pide borrar la posicion 1 de una lista de 5 elementos", lista_borrar_de_posicion(lista,1) == EXITO); //&& lista->primero->siguiente->elemento == &c);
-  asegurar_probador(probador,"Se pide borrar la posicion 0 de una lista de 4 elementos", lista_borrar_de_posicion(lista,0) == EXITO); //&& lista->primero->elemento == &c);
+  asegurar_probador(probador,"Se pide borrar la posicion 1 de una lista de 5 elementos", lista_borrar_de_posicion(lista,1) == EXITO);
+  asegurar_probador(probador,"Se pide borrar la posicion 0 de una lista de 4 elementos", lista_borrar_de_posicion(lista,0) == EXITO);
   lista_destruir(lista);
   mostrar_estadisticas_locales(probador);
 }
@@ -263,7 +263,6 @@ void pruebas_de_apilar(probador_t* probador){
   lista_t* pila = lista_crear();
   asegurar_probador(probador,"Se intenta apilar en una pila nula", lista_apilar(NULL,&a) == FALLO);
   asegurar_probador(probador,"Se inserta el primer elemento en la pila", lista_apilar(pila,&a) == EXITO && lista_ultimo(pila) == lista_primero(pila) && lista_ultimo(pila) == &a);
-  // Caja blanca  asegurar_probador(probador,"Se inserta el primer elemento en la pila", lista_apilar(pila,&a) == EXITO && lista->primero->elemento == lista->ultimo->elemento);
   asegurar_probador(probador,"Se otro elemento en la pila correctamente al final", lista_apilar(pila,&b) == EXITO && lista_ultimo(pila) == &b);
   asegurar_probador(probador,"Se intenta apilar un elemento nulo en una pila no nula", lista_apilar(pila,NULL) == EXITO);
   lista_destruir(pila);
@@ -288,7 +287,6 @@ void pruebas_de_desapilar(probador_t* probador){
   lista_apilar(pila,&b);
   lista_apilar(pila,&c);
   asegurar_probador(probador,"Se intenta desapilar una pila con mas de un elemento", lista_desapilar(pila) == EXITO && lista_elementos(pila) == 1);
-  // Caja blanca asegurar_probador(probador,"Se intenta desapilar una pila con mas de un elemento", lista_desapilar(pila) == EXITO && lista->cantidad_elementos == 1 && lista->primero == lista->ultimo );
   lista_destruir(pila);
   mostrar_estadisticas_locales(probador);
 }
@@ -308,7 +306,6 @@ void pruebas_de_lista_tope(probador_t* probador){
   asegurar_probador(probador,"Se pasas una pila vacia", lista_tope(pila) == NULL);
   lista_apilar(pila,&a);
   asegurar_probador(probador,"Se pide el elemento tope de una pila con unico elemento", lista_tope(pila) == &a);
-  // Caja blanca   asegurar_probador(probador,"Se pide el elemento tope de una pila con unico elemento", lista_tope(pila) == lista->ultimo->elemento && lista->ultimo->elemento == &a);
   lista_apilar(pila,&b);
   lista_apilar(pila,&c);
   asegurar_probador(probador,"Se pide el elemento tope de una pila de varios elementos", lista_tope(pila) == &c);
