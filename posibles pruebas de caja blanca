@@ -1,0 +1,28 @@
+/*
+Posibles pruebas de caja blanca
+
+De lista insertar
+// && lista->primero == lista->ultimo && lista->primero->elemento == &a);
+//) && lista->ultimo->elemento == &b);
+
+De lista insertar en posicion
+ //&& lista->primero == lista->ultimo);
+ //&& lista->ultimo->elemento == &b);
+ //&& lista->primero->elemento == &c);
+ //&& lista->primero->siguiente->elemento == &d);
+
+ De lista borrar
+ //&& lista->primero == NULL && lista->ultimo == NULL);
+ //&& lista->primero->siguiente == NULL);
+
+ De lista_borrar_de_posicion
+ //&& lista->ultimo->elemento == &d);
+ //&& lista->primero->siguiente->elemento == &c);
+ //&& lista->primero->elemento == &c);
+
+ // Caja blanca  asegurar_probador(probador,"Se inserta el primer elemento en la pila", lista_apilar(pila,&a) == EXITO && lista->primero->elemento == lista->ultimo->elemento);
+ // Caja blanca asegurar_probador(probador,"Se intenta desapilar una pila con mas de un elemento", lista_desapilar(pila) == EXITO && lista->cantidad_elementos == 1 && lista->primero == lista->ultimo );
+ // Caja blanca   asegurar_probador(probador,"Se pide el elemento tope de una pila con unico elemento", lista_tope(pila) == lista->ultimo->elemento && lista->ultimo->elemento == &a);
+
+
+*/
