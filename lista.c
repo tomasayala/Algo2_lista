@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdbool.h>
 #include "lista.h"
 
 const int ERROR = -1;
@@ -16,6 +17,7 @@ struct lista{
     nodo_t* primero;
     nodo_t* ultimo;
     size_t cantidad_elementos;
+    bool es_cola;
 };
 
 struct lista_iterador{
@@ -55,6 +57,7 @@ lista_t* vaciar_lista(lista_t* lista){
 
 lista_t* lista_crear(){
   lista_t* lista = calloc (1, sizeof (lista_t));
+  lista->es_cola = false;
   return lista;
 }
 
@@ -146,7 +149,7 @@ lista_t* insertar_primer_elemento(lista_t* lista, nodo_t* nuevo){
 */
 
 int lista_insertar(lista_t* lista, void* elemento){
-  if(!lista){
+  if(!lista || lista->es_cola ){
     return ERROR;
   }
   nodo_t* nuevo = crear_nodo(elemento);
@@ -167,7 +170,7 @@ int lista_insertar(lista_t* lista, void* elemento){
 */
 
 int lista_insertar_en_posicion ( lista_t* lista, void* elemento, size_t posicion){
-  if(!lista)
+  if(!lista || lista->es_cola)
     return ERROR;
   if (posicion >= lista->cantidad_elementos)
     return lista_insertar(lista,elemento);
@@ -207,7 +210,7 @@ lista_t* desapilar (lista_t* lista){
 */
 
 int lista_borrar(lista_t* lista){
-  if(!lista || lista_vacia(lista))
+  if(!lista || lista_vacia(lista) || lista->es_cola)
     return ERROR;
   if(lista->cantidad_elementos == UNICO_ELEMENTO){
     lista = vaciar_lista(lista);
@@ -215,22 +218,6 @@ int lista_borrar(lista_t* lista){
   }
   lista = desapilar(lista);
   return TODO_OK;
-}
-
-/*
-* Funcion publica
-* Precondiciones: La lista debe haber sido creado con lista_crear
-* Postcondiciones: Se libera la memoria de la lista y de los nodos
-*/
-
-void lista_destruir(lista_t* lista){
-  if (!lista)
-    return;
-  int borrado = lista_borrar(lista);
-  while ( !lista_vacia(lista) && borrado == TODO_OK){
-    borrado = lista_borrar(lista);
-  }
-  free(lista);
 }
 
 /*
@@ -370,6 +357,7 @@ lista_t* encolar(lista_t* lista, nodo_t* nuevo){
   nuevo->siguiente = lista->ultimo;
   lista->ultimo = nuevo;
   lista->cantidad_elementos++;
+  lista->es_cola = true;
   return lista;
 }
 
@@ -436,6 +424,22 @@ void* lista_primero(lista_t* lista){
   return lista->primero->elemento;
 }
 
+/*
+* Funcion publica
+* Precondiciones: La lista debe haber sido creado con lista_crear
+* Postcondiciones: Se libera la memoria de la lista y de los nodos
+*/
+
+void lista_destruir(lista_t* lista){
+  if (!lista)
+    return;
+  int (*funcion_borradora) (lista_t*) = lista->es_cola ? lista_desencolar : lista_borrar;
+  int borrado = funcion_borradora(lista);
+  while ( !lista_vacia(lista) && borrado == TODO_OK){
+    borrado = funcion_borradora(lista);
+  }
+  free(lista);
+}
 
 /*
 * Funcion publica
